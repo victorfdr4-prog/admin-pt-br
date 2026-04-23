@@ -1,0 +1,577 @@
+Sexta etapa — refinamento final do board
+Objetivo
+
+Levar o board da base “muito boa” para uma experiência realmente madura, com:
+
+mais sensação de fluidez
+mais velocidade operacional
+menos cliques
+mais clareza no hover e nas ações rápidas
+tabela mais útil
+drawer mais organizado
+fallback visual de loading e empty state
+UX mais próxima de Asana
+1. Task quick actions no hover
+Objetivo
+
+Permitir ações rápidas sem abrir o drawer toda hora.
+
+Ações ideais
+abrir
+editar
+duplicar
+marcar concluída
+mover
+menu contextual
+src/components/board/task-quick-actions.tsx
+"use client";
+
+import { Check, Copy, ExternalLink, MoreHorizontal, Pencil } from "lucide-react";
+
+export function TaskQuickActions() {
+  return (
+    <div className="flex items-center gap-1 opacity-0 transition group-hover:opacity-100">
+      <button className="inline-flex h-8 w-8 items-center justify-center rounded-md text-textSecondary hover:bg-surfaceSecondary hover:text-textPrimary">
+        <ExternalLink size={15} />
+      </button>
+
+      <button className="inline-flex h-8 w-8 items-center justify-center rounded-md text-textSecondary hover:bg-surfaceSecondary hover:text-textPrimary">
+        <Pencil size={15} />
+      </button>
+
+      <button className="inline-flex h-8 w-8 items-center justify-center rounded-md text-textSecondary hover:bg-surfaceSecondary hover:text-textPrimary">
+        <Copy size={15} />
+      </button>
+
+      <button className="inline-flex h-8 w-8 items-center justify-center rounded-md text-textSecondary hover:bg-surfaceSecondary hover:text-success">
+        <Check size={15} />
+      </button>
+
+      <button className="inline-flex h-8 w-8 items-center justify-center rounded-md text-textSecondary hover:bg-surfaceSecondary hover:text-textPrimary">
+        <MoreHorizontal size={15} />
+      </button>
+    </div>
+  );
+}
+2. Task card com drag handle sutil + quick actions
+src/components/board/task-card-premium.tsx
+"use client";
+
+import { motion } from "framer-motion";
+import { CalendarDays, GripVertical, MessageSquare, Paperclip } from "lucide-react";
+import { StatusChip } from "@/components/ui/status-chip";
+import { TaskQuickActions } from "@/components/board/task-quick-actions";
+
+export function TaskCardPremium() {
+  return (
+    <motion.div
+      layout
+      whileHover={{ y: -2 }}
+      transition={{ duration: 0.16 }}
+      className="group cursor-pointer rounded-xl border border-border bg-surface p-4 shadow-sm"
+    >
+      <div className="space-y-4">
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex min-w-0 gap-3">
+            <div className="pt-0.5 text-textTertiary opacity-60 transition group-hover:opacity-100">
+              <GripVertical size={16} />
+            </div>
+
+            <div className="min-w-0">
+              <p className="line-clamp-2 text-sm font-medium leading-5 text-textPrimary">
+                Criar campanha de inauguração com foco em awareness e primeiros contatos
+              </p>
+              <p className="mt-1 truncate text-xs text-textSecondary">
+                Daniela Estética
+              </p>
+            </div>
+          </div>
+
+          <TaskQuickActions />
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <StatusChip label="Alta" variant="danger" />
+          <StatusChip label="Em andamento" variant="info" />
+        </div>
+
+        <div className="flex items-center gap-3 text-xs text-textSecondary">
+          <div className="inline-flex items-center gap-1">
+            <CalendarDays size={14} />
+            Hoje
+          </div>
+
+          <div className="inline-flex items-center gap-1">
+            <MessageSquare size={14} />
+            3
+          </div>
+
+          <div className="inline-flex items-center gap-1">
+            <Paperclip size={14} />
+            2
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div className="text-xs text-textTertiary">Atualizado há 2h</div>
+          <div className="h-8 w-8 rounded-full bg-surfaceSecondary" />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+3. Empty state do board
+src/components/board/board-empty-state.tsx
+export function BoardEmptyState() {
+  return (
+    <div className="rounded-2xl border border-dashed border-border bg-surface p-10 text-center">
+      <div className="mx-auto max-w-md">
+        <h3 className="text-base font-semibold text-textPrimary">
+          Nenhuma tarefa encontrada
+        </h3>
+        <p className="mt-2 text-sm text-textSecondary">
+          Ajuste os filtros ou crie uma nova tarefa para começar a organizar essa etapa.
+        </p>
+        <button className="mt-4 rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:opacity-95">
+          Criar tarefa
+        </button>
+      </div>
+    </div>
+  );
+}
+4. Skeleton do board
+src/components/board/board-skeleton.tsx
+export function BoardSkeleton() {
+  return (
+    <div className="grid gap-5 xl:grid-cols-4">
+      {Array.from({ length: 4 }).map((_, columnIndex) => (
+        <div
+          key={columnIndex}
+          className="rounded-2xl border border-border bg-surfaceSecondary/60 p-3"
+        >
+          <div className="mb-4 h-8 w-32 animate-pulse rounded-md bg-surface" />
+          <div className="space-y-3">
+            {Array.from({ length: 4 }).map((_, cardIndex) => (
+              <div
+                key={cardIndex}
+                className="h-36 animate-pulse rounded-xl border border-border bg-surface"
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+5. Seleção múltipla na tabela
+Objetivo
+
+Dar mais poder operacional no modo tabela.
+
+src/components/board/task-row-selectable.tsx
+import { StatusChip } from "@/components/ui/status-chip";
+
+type TaskRowSelectableProps = {
+  selected?: boolean;
+};
+
+export function TaskRowSelectable({
+  selected = false,
+}: TaskRowSelectableProps) {
+  return (
+    <tr
+      className={`border-b border-border last:border-0 hover:bg-surfaceSecondary/60 ${
+        selected ? "bg-primarySoft/60" : ""
+      }`}
+    >
+      <td className="px-4 py-4">
+        <input type="checkbox" checked={selected} readOnly />
+      </td>
+
+      <td className="px-4 py-4">
+        <div>
+          <p className="text-sm font-medium text-textPrimary">
+            Criar campanha de inauguração
+          </p>
+          <p className="mt-1 text-xs text-textSecondary">
+            Awareness + primeiras interações
+          </p>
+        </div>
+      </td>
+
+      <td className="px-4 py-4 text-sm text-textSecondary">Daniela Estética</td>
+
+      <td className="px-4 py-4">
+        <StatusChip label="Em andamento" variant="info" />
+      </td>
+
+      <td className="px-4 py-4">
+        <StatusChip label="Alta" variant="danger" />
+      </td>
+
+      <td className="px-4 py-4 text-sm text-textSecondary">Hoje</td>
+
+      <td className="px-4 py-4">
+        <div className="flex items-center gap-2">
+          <div className="h-7 w-7 rounded-full bg-surfaceSecondary" />
+          <span className="text-sm text-textSecondary">Victor</span>
+        </div>
+      </td>
+
+      <td className="px-4 py-4 text-right">
+        <button className="rounded-md px-3 py-1.5 text-sm text-textSecondary hover:bg-surfaceSecondary hover:text-textPrimary">
+          Abrir
+        </button>
+      </td>
+    </tr>
+  );
+}
+src/components/board/board-table-view.tsx
+import { TaskRowSelectable } from "@/components/board/task-row-selectable";
+
+export function BoardTableView() {
+  return (
+    <div className="space-y-4">
+      <div className="rounded-xl border border-border bg-surface p-3 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="text-sm text-textSecondary">
+            2 tarefas selecionadas
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            <button className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-textPrimary hover:bg-surfaceSecondary">
+              Mover
+            </button>
+            <button className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-textPrimary hover:bg-surfaceSecondary">
+              Alterar responsável
+            </button>
+            <button className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-textPrimary hover:bg-surfaceSecondary">
+              Concluir
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="overflow-hidden rounded-xl border border-border bg-surface shadow-sm">
+        <div className="overflow-x-auto">
+          <table className="min-w-full border-collapse">
+            <thead className="bg-surfaceSecondary/70">
+              <tr className="text-left">
+                <th className="px-4 py-3">
+                  <input type="checkbox" />
+                </th>
+                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-textTertiary">
+                  Tarefa
+                </th>
+                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-textTertiary">
+                  Cliente
+                </th>
+                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-textTertiary">
+                  Status
+                </th>
+                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-textTertiary">
+                  Prioridade
+                </th>
+                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-textTertiary">
+                  Prazo
+                </th>
+                <th className="px-4 py-3 text-xs font-semibold uppercase tracking-wide text-textTertiary">
+                  Responsável
+                </th>
+                <th className="px-4 py-3" />
+              </tr>
+            </thead>
+
+            <tbody>
+              <TaskRowSelectable selected />
+              <TaskRowSelectable selected />
+              <TaskRowSelectable />
+              <TaskRowSelectable />
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}
+6. Task drawer com tabs reais
+
+Agora vamos organizar melhor o drawer.
+
+src/components/board/task-drawer-premium.tsx
+"use client";
+
+import { useState } from "react";
+import { CalendarDays, CheckSquare, FileText, MessageSquare, User } from "lucide-react";
+import { StatusChip } from "@/components/ui/status-chip";
+
+type TabKey = "details" | "checklist" | "comments" | "activity";
+
+export function TaskDrawerPremium() {
+  const [tab, setTab] = useState<TabKey>("details");
+
+  return (
+    <aside className="fixed right-0 top-0 z-40 h-screen w-full max-w-2xl border-l border-border bg-surface shadow-lg">
+      <div className="flex h-full flex-col">
+        <div className="border-b border-border px-6 py-5">
+          <div className="flex items-start justify-between gap-4">
+            <div className="min-w-0 space-y-3">
+              <div className="flex flex-wrap items-center gap-2">
+                <StatusChip label="Em andamento" variant="info" />
+                <StatusChip label="Alta prioridade" variant="danger" />
+                <StatusChip label="Hoje" variant="warning" />
+              </div>
+
+              <input
+                defaultValue="Criar campanha de inauguração com foco em awareness"
+                className="w-full bg-transparent text-xl font-semibold leading-7 text-textPrimary outline-none"
+              />
+
+              <p className="text-sm text-textSecondary">
+                Daniela Estética • Atualizado há 2 horas
+              </p>
+            </div>
+
+            <button className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-textSecondary hover:bg-surfaceSecondary hover:text-textPrimary">
+              Fechar
+            </button>
+          </div>
+        </div>
+
+        <div className="border-b border-border px-6 py-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <DrawerTab active={tab === "details"} onClick={() => setTab("details")}>
+              Detalhes
+            </DrawerTab>
+            <DrawerTab active={tab === "checklist"} onClick={() => setTab("checklist")}>
+              Checklist
+            </DrawerTab>
+            <DrawerTab active={tab === "comments"} onClick={() => setTab("comments")}>
+              Comentários
+            </DrawerTab>
+            <DrawerTab active={tab === "activity"} onClick={() => setTab("activity")}>
+              Atividade
+            </DrawerTab>
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-y-auto px-6 py-6">
+          {tab === "details" && (
+            <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+              <div className="space-y-6">
+                <section className="space-y-3">
+                  <h3 className="text-sm font-semibold text-textPrimary">Descrição</h3>
+                  <textarea
+                    defaultValue="Criar a estrutura inicial da campanha, organizar conceito, copy base, referências e próximos passos."
+                    className="min-h-[150px] w-full rounded-xl border border-border bg-surfaceSecondary p-4 text-sm text-textPrimary outline-none"
+                  />
+                </section>
+              </div>
+
+              <div className="space-y-4">
+                <InfoCard icon={<User size={15} />} label="Responsável" value="Victor" />
+                <InfoCard icon={<CalendarDays size={15} />} label="Prazo" value="Hoje às 17:00" />
+                <InfoCard icon={<FileText size={15} />} label="Anexos" value="2 arquivos" />
+              </div>
+            </div>
+          )}
+
+          {tab === "checklist" && (
+            <div className="space-y-3">
+              {[
+                "Definir conceito criativo",
+                "Montar copy inicial",
+                "Separar referências",
+                "Subir para revisão interna",
+              ].map((item) => (
+                <label
+                  key={item}
+                  className="flex items-center gap-3 rounded-lg border border-border bg-surfaceSecondary px-4 py-3"
+                >
+                  <input type="checkbox" />
+                  <span className="text-sm text-textPrimary">{item}</span>
+                </label>
+              ))}
+            </div>
+          )}
+
+          {tab === "comments" && (
+            <div className="space-y-4">
+              <div className="rounded-xl border border-border bg-surfaceSecondary p-4">
+                <div className="mb-1 text-sm font-medium text-textPrimary">Victor</div>
+                <p className="text-sm text-textSecondary">
+                  Vamos fechar essa tarefa hoje para destravar as próximas entregas.
+                </p>
+              </div>
+
+              <textarea
+                placeholder="Adicione um comentário..."
+                className="min-h-[120px] w-full rounded-xl border border-border bg-surfaceSecondary p-4 text-sm text-textPrimary outline-none"
+              />
+            </div>
+          )}
+
+          {tab === "activity" && (
+            <div className="space-y-3">
+              {[
+                "Status alterado para Em andamento há 2h",
+                "Prazo atualizado ontem às 18:42",
+                "Comentário adicionado hoje às 09:15",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="rounded-lg border border-border bg-surfaceSecondary p-4 text-sm text-textSecondary"
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <div className="border-t border-border px-6 py-4">
+          <div className="flex items-center justify-between gap-3">
+            <button className="rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-textPrimary hover:bg-surfaceSecondary">
+              Excluir
+            </button>
+
+            <div className="flex items-center gap-2">
+              <button className="rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-textPrimary hover:bg-surfaceSecondary">
+                Cancelar
+              </button>
+              <button className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:opacity-95">
+                Salvar alterações
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  );
+}
+
+function DrawerTab({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`rounded-md px-3 py-2 text-sm font-medium transition ${
+        active
+          ? "bg-primary text-white"
+          : "text-textSecondary hover:bg-surfaceSecondary hover:text-textPrimary"
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
+
+function InfoCard({
+  icon,
+  label,
+  value,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+}) {
+  return (
+    <div className="rounded-xl border border-border bg-surfaceSecondary p-4">
+      <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-textPrimary">
+        {icon}
+        {label}
+      </div>
+      <div className="text-sm text-textSecondary">{value}</div>
+    </div>
+  );
+}
+7. Board page finalizada para esse ciclo
+src/app/board/page.tsx
+"use client";
+
+import { useState } from "react";
+import { AppShell } from "@/components/layout/app-shell";
+import { PageHeader } from "@/components/layout/page-header";
+import { BoardToolbar } from "@/components/board/board-toolbar";
+import { BoardKanbanView } from "@/components/board/board-kanban-view";
+import { BoardTableView } from "@/components/board/board-table-view";
+
+export default function BoardPage() {
+  const [view, setView] = useState<"kanban" | "table">("kanban");
+
+  return (
+    <AppShell>
+      <div className="space-y-6">
+        <PageHeader
+          title="Board"
+          description="Gerencie tarefas com um fluxo mais visual, rápido e confortável."
+          actions={
+            <button className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:opacity-95">
+              Nova tarefa
+            </button>
+          }
+        />
+
+        <BoardToolbar view={view} onChangeView={setView} />
+
+        {view === "kanban" ? <BoardKanbanView /> : <BoardTableView />}
+      </div>
+    </AppShell>
+  );
+}
+8. O que essa sexta etapa resolve
+
+Com isso, você já ganha:
+
+board com muito mais cara de produto premium
+hover funcional
+task card mais vivo
+tabela mais útil
+bulk actions básicas
+drawer muito mais organizado
+loading e empty state
+experiência mais próxima de Asana
+9. Próximo nível recomendado
+
+Agora o board já está bom o suficiente para parecer produto de verdade.
+
+O próximo salto seria:
+
+fase 7 ideal
+responsividade forte do board
+drag and drop real
+filtros funcionais
+ordenação persistida
+command palette conectada
+quick create global
+polishing visual final
+client hub no mesmo nível do board
+calendário com mesma sofisticação
+10. Prompt pronto para continuar no Claude
+Message
+
+Continue a partir dessa sexta etapa e faça o polimento final do board e a elevação do restante do sistema para o mesmo nível.
+
+Quero agora:
+
+drag and drop real no kanban
+responsividade do board
+filtros funcionais no BoardToolbar
+persistência do modo kanban/tabela
+seleção múltipla funcional
+command palette integrada ao board
+quick create global
+refinamento visual final do board para ficar ainda mais próximo do Asana
+elevar o client hub para o mesmo nível visual do board
+elevar o calendário para o mesmo nível visual do board
+manter dark/light premium
+manter framer-motion sutil
+manter React + Tailwind + shadcn
+manter estratégia de refatoração incremental

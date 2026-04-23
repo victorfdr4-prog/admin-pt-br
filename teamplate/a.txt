@@ -1,0 +1,815 @@
+Redesign completo do painel de gestão de marketing
+Objetivo
+
+Transformar o sistema atual, que já é funcional e completo em escopo, em uma plataforma interna com experiência premium, leitura imediata, operação fluida e forte vontade de uso diário.
+
+O redesenho não deve adicionar novos módulos desnecessários.
+Ele deve reorganizar, simplificar e valorizar o que já existe.
+
+O foco é:
+
+mais usabilidade
+mais clareza
+mais prazer de uso
+mais consistência entre telas
+menos aparência de ERP
+mais lógica de operação real de marketing
+board com referência de Asana
+calendário/editorial com clareza próxima de mLabs
+estrutura visual com consistência de Monday
+refinamento e microinterações no nível de ferramentas modernas
+1. Diagnóstico dos principais problemas atuais
+1.1 O sistema está completo, mas a experiência não está “editada”
+
+Existe escopo suficiente e boa cobertura funcional, mas a sensação geral é de acúmulo de features, não de experiência desenhada.
+
+Sintomas:
+
+muitas áreas com peso visual parecido
+pouca hierarquia entre o que importa agora e o que é contexto
+excesso de blocos informativos sem narrativa operacional clara
+sensação de sistema administrativo denso demais
+1.2 O dashboard provavelmente resume, mas não conduz
+
+Hoje o painel tende a funcionar como uma coletânea de indicadores, listas e módulos.
+Ele precisa virar uma central de decisão.
+
+O usuário precisa abrir o sistema e entender em segundos:
+
+o que precisa de atenção
+o que está atrasado
+o que precisa ser aprovado
+quem está em risco
+o que precisa ser entregue hoje
+1.3 O hub do cliente tende a parecer ficha ou módulo
+
+O hub deve parar de ser “página do cliente” e virar “cockpit operacional do cliente”.
+
+Ele deve responder:
+
+esse cliente está saudável ou em risco?
+qual é a próxima ação?
+o que está travado?
+o que está em produção?
+o que depende de aprovação?
+o que vai ser publicado?
+1.4 O board precisa parecer menos customização e mais ferramenta viva
+
+Mesmo com kanban, tabela, drawer e modal já existentes, a experiência precisa de:
+
+melhor densidade visual
+mais legibilidade
+cards mais úteis
+melhor uso de cor e status
+ações mais rápidas
+sensação de agilidade
+1.5 Falta uma camada visual unificadora
+
+O sistema parece ter bons módulos, mas eles não conversam como um produto único.
+Precisa existir um design system forte e semântico o suficiente para que tudo pareça parte do mesmo ecossistema.
+
+2. Nova arquitetura de informação
+
+A arquitetura deve sair da lógica “módulos do sistema” e entrar na lógica “fluxo real de trabalho”.
+
+Estrutura principal recomendada
+Grupo 1 — Hoje
+
+Tudo que precisa de atenção imediata
+
+Dashboard
+Foco do dia
+Alertas
+Aprovações pendentes
+Grupo 2 — Operação
+
+Onde o trabalho acontece
+
+Board
+Calendário de conteúdo
+Documentos
+Aprovações
+Quick create
+Grupo 3 — Clientes
+
+Visão e gestão por cliente
+
+Clientes
+Hub do cliente
+Saúde
+Timeline
+Próximas ações
+Grupo 4 — Recursos
+
+Base de apoio operacional
+
+Drive
+Financeiro
+Time
+Portal
+Grupo 5 — Sistema
+
+Infraestrutura do produto
+
+Configurações
+Preferências
+Permissões
+Integrações futuras
+3. Proposta de navegação
+Sidebar ideal
+
+A sidebar deve ser redesenhada para parecer menos “menu administrativo” e mais “comando operacional”.
+
+Estrutura sugerida
+Bloco superior
+Busca global
+Quick create
+Notificações
+Toggle dark/light
+Navegação principal
+Hoje
+Visão geral
+Operação
+Board
+Calendário
+Aprovações
+Documentos
+Clientes
+Clientes
+Saúde dos clientes
+Atividade
+Recursos
+Financeiro
+Drive
+Time
+Portal
+Sistema
+Configurações
+Regras da sidebar
+ícones simples e consistentes
+item ativo com fundo evidente, não só linha lateral
+grupos com respiro claro
+labels curtos
+contadores visuais quando houver pendência
+opção de sidebar colapsável
+hover com resposta suave
+tooltips elegantes no modo colapsado
+4. Blueprint do novo dashboard
+
+O novo dashboard não deve ser uma parede de informação.
+Ele deve ter narrativa.
+
+Ordem do dashboard
+1. Hero operacional: Foco do dia
+
+Card principal no topo, com destaque visual.
+Deve responder:
+
+quantas tarefas atrasadas existem
+quantas aprovações pendentes existem
+quais clientes precisam de ação
+qual é a próxima grande prioridade
+
+Exemplo:
+
+3 tarefas atrasadas
+2 conteúdos aguardando aprovação
+1 cliente sem atualização há 4 dias
+próxima ação recomendada: revisar campanha editorial da semana
+
+Esse bloco precisa ter CTA direto:
+
+abrir board
+abrir aprovações
+abrir cliente crítico
+2. Alertas e riscos
+
+Logo abaixo do hero, uma área de alertas com forte semântica visual.
+
+Categorias:
+
+atrasos
+conteúdo sem avanço
+clientes sem atividade
+itens aguardando aprovação
+itens vencendo hoje
+
+O usuário não deve ler um card genérico.
+Ele deve bater o olho e saber:
+
+o que está errado
+por que importa
+onde clicar para resolver
+3. Aprovações pendentes
+
+Seção compacta, escaneável e objetiva.
+Cada item deve mostrar:
+
+cliente
+título do conteúdo ou documento
+tipo
+data
+status
+ação rápida
+4. Conteúdos e tarefas do dia
+
+Uma visão híbrida entre agenda e execução.
+Aqui deve entrar:
+
+conteúdos de hoje
+tarefas de hoje
+entregas próximas
+itens em revisão
+5. Clientes que exigem atenção
+
+Lista priorizada por risco e não por ordem alfabética.
+
+Cada card deve mostrar:
+
+nome
+saúde
+próximo passo
+conteúdos atrasados ou tarefas pendentes
+última atividade
+6. Resumo executivo
+
+Só depois da camada operacional entram os números agregados.
+Exemplos:
+
+clientes ativos
+tarefas concluídas na semana
+conteúdos publicados
+pendências em aberto
+7. Atividade recente
+
+Feed leve com:
+
+aprovações feitas
+tarefas concluídas
+documentos atualizados
+conteúdos publicados
+5. Blueprint do novo hub do cliente
+
+O hub do cliente precisa ser o cockpit operacional.
+
+Estrutura recomendada
+Topo do hub
+
+Header com:
+
+nome do cliente
+status geral
+badge de saúde
+próxima ação
+CTA principais
+
+CTAs:
+
+criar tarefa
+criar conteúdo
+abrir board filtrado
+abrir calendário do cliente
+Faixa de resumo rápido
+
+Logo abaixo do topo:
+
+saúde operacional
+número de tarefas abertas
+aprovações pendentes
+conteúdos da semana
+última atividade
+próximo deadline
+Organização por blocos
+Bloco 1 — Situação atual
+saúde
+pendências críticas
+próxima ação
+indicadores operacionais
+Bloco 2 — Trabalho em andamento
+tarefas abertas
+conteúdos em produção
+aprovações pendentes
+Bloco 3 — Planejamento
+calendário editorial
+próximos conteúdos
+próximos prazos
+Bloco 4 — Base do cliente
+documentos
+arquivos
+observações
+informações úteis
+Bloco 5 — Histórico
+timeline de atividade
+entregas recentes
+atualizações importantes
+Abas recomendadas
+
+Em vez de tabs genéricas e frias, usar uma estrutura clara:
+
+Visão geral
+Execução
+Conteúdo
+Documentos
+Financeiro
+Atividade
+6. Blueprint do novo board
+Objetivo
+
+Manter a referência do Asana, sem copiar literalmente, mas absorvendo o que ele faz bem:
+
+escaneabilidade
+leveza
+clareza de coluna
+densidade equilibrada
+prazer visual
+edição rápida
+6.1 Board kanban
+Estrutura das colunas
+
+Cada coluna precisa de:
+
+título
+contador
+indicador de cor
+ação rápida para adicionar tarefa
+menu contextual
+Cards
+
+Cada card deve mostrar apenas o essencial, em ordem de leitura:
+
+título
+cliente
+prioridade
+prazo
+responsável
+tags
+microestado opcional
+
+O card não pode parecer pesado.
+Precisa ser compacto, respirado e clicável.
+
+Regras do card
+fundo claro e limpo
+borda sutil
+sombra mínima
+prioridade marcada por chip ou barra sutil
+hover com leve elevação
+drag com feedback elegante
+quick actions no hover
+avatar do responsável
+prazo com semântica visual
+6.2 Board tabela
+
+A tabela precisa deixar de parecer grade burocrática.
+
+Melhorias
+linhas mais leves
+cabeçalhos melhores
+mais espaçamento horizontal
+ícones sem excesso
+inline actions
+edição inline apenas onde for útil
+filtros mais claros
+toolbar superior forte
+Colunas recomendadas
+tarefa
+cliente
+status
+prioridade
+prazo
+responsável
+última atualização
+6.3 Drawer de tarefa
+
+O drawer precisa ser reescrito para parecer mais moderno e menos formulário lateral.
+
+Estrutura recomendada
+topo com título editável
+cliente
+status
+prioridade
+responsável
+prazo
+descrição
+checklist
+comentários
+atividade
+Regras
+seções bem separadas
+salvar automático quando fizer sentido
+ações rápidas visíveis
+menos cara de formulário travado
+6.4 Modal de criação
+
+O modal deve permitir criação rápida sem excesso de campos.
+Modo padrão:
+
+título
+cliente
+status
+prazo
+responsável
+
+Modo expandido:
+
+descrição
+tags
+checklist
+anexos
+7. Blueprint do calendário de conteúdo
+Objetivo
+
+Aproximar a experiência da clareza do mLabs:
+
+fácil de bater o olho
+status compreensíveis
+boa relação entre conteúdo e execução
+conforto visual
+Modos de visualização
+mês
+semana
+agenda
+por cliente
+Estados de conteúdo
+
+Cada conteúdo precisa deixar claro em que fase está:
+
+ideia
+produção
+revisão
+aprovado
+agendado
+publicado
+
+Esses estados precisam ter chips e cores consistentes.
+
+Card de conteúdo
+
+Cada item deve mostrar:
+
+título
+cliente
+formato
+status
+data
+responsável
+
+Opcional:
+
+canal
+pendência
+aprovação
+Relação com tarefas
+
+Cada conteúdo deve se conectar visualmente com a operação.
+Ao abrir um conteúdo, deve ser possível ver:
+
+tarefas relacionadas
+quem está responsável
+status da aprovação
+assets envolvidos
+Melhorias de UX
+filtros mais úteis
+cores mais semânticas
+mais respiro entre dias
+cards com melhor contraste
+destaque claro para hoje
+estado vazio inteligente
+drag and drop confortável
+8. Design system completo
+8.1 Princípios
+
+O design system deve transmitir:
+
+clareza
+confiança
+velocidade
+sofisticação discreta
+operação sem atrito
+8.2 Tokens de cor
+Light
+background: #F7F8FA
+surface: #FFFFFF
+surface-secondary: #F3F4F6
+border: #E5E7EB
+text-primary: #111827
+text-secondary: #6B7280
+text-tertiary: #9CA3AF
+primary: #5B5CE2
+primary-soft: #EEF0FF
+success: #16A34A
+success-soft: #DCFCE7
+warning: #D97706
+warning-soft: #FEF3C7
+danger: #DC2626
+danger-soft: #FEE2E2
+info: #2563EB
+info-soft: #DBEAFE
+Dark
+background: #0B1020
+surface: #111827
+surface-secondary: #172033
+border: #243045
+text-primary: #F3F4F6
+text-secondary: #CBD5E1
+text-tertiary: #94A3B8
+primary: #818CF8
+primary-soft: rgba(129, 140, 248, 0.12)
+success: #22C55E
+success-soft: rgba(34, 197, 94, 0.14)
+warning: #F59E0B
+warning-soft: rgba(245, 158, 11, 0.14)
+danger: #EF4444
+danger-soft: rgba(239, 68, 68, 0.14)
+info: #60A5FA
+info-soft: rgba(96, 165, 250, 0.14)
+8.3 Tipografia
+
+Fonte recomendada:
+
+Inter ou Geist
+
+Escala:
+
+display: 32/40
+h1: 28/36
+h2: 24/32
+h3: 20/28
+title: 16/24
+body: 14/22
+caption: 12/18
+
+Pesos:
+
+600 para títulos
+500 para labels
+400 para corpo
+500 para destaque secundário
+8.4 Radius
+cards: 16px
+inputs: 12px
+buttons: 10px
+chips: 999px
+drawers/modals: 20px quando fizer sentido
+8.5 Shadows
+
+Usar sombras leves, elegantes e consistentes.
+Nada pesado.
+
+8.6 Spacing
+
+Base 4
+Sistema:
+
+4
+8
+12
+16
+20
+24
+32
+40
+8.7 Componentes base
+page header
+section header
+hero card
+metric card
+alert card
+client status card
+task card
+content card
+approval row
+timeline item
+toolbar
+filter chip
+segmented tabs
+drawer section
+activity item
+9. Recomendações de animação e microinteração
+
+A animação deve ser leve, curta e funcional.
+
+Diretrizes
+hover de cards com pequena elevação
+feedback de clique instantâneo
+entradas suaves de drawers
+transições curtas entre tabs
+skeletons bem desenhados
+drag and drop com feedback elegante
+chips e botões com estados claros
+Duração
+hover: 120ms a 160ms
+abertura de drawer: 180ms a 220ms
+fade/slide de cards: 180ms
+mudanças pequenas: 100ms a 140ms
+O que evitar
+animações longas
+bounce excessivo
+excesso de motion
+sensação de interface “brincalhona”
+10. UX writing
+
+O texto da interface precisa sair do estilo técnico frio e ir para um estilo operacional claro.
+
+Regras
+usar frases curtas
+evitar labels burocráticos
+priorizar verbos claros
+mostrar estado e consequência
+evitar jargões excessivos
+Exemplos
+
+Em vez de:
+
+status operacional pendente
+
+Usar:
+
+aguardando aprovação
+
+Em vez de:
+
+item sem atualização recente
+
+Usar:
+
+sem atualização há 4 dias
+
+Em vez de:
+
+ação sugerida
+
+Usar:
+
+próxima ação
+
+Em vez de:
+
+gerenciamento de clientes
+
+Usar:
+
+clientes
+11. Plano de implementação por etapas
+Fase 1 — Fundamentos
+definir design tokens
+padronizar cores e estados
+reescrever sidebar
+reescrever page headers
+ajustar grid, spacing e cards
+Fase 2 — Dashboard
+criar hero de foco do dia
+reordenar blocos
+redesenhar alertas
+redesenhar aprovações
+redesenhar clientes em atenção
+reorganizar atividade recente
+Fase 3 — Client hub
+redesenhar topo
+reorganizar visão geral
+padronizar seções
+priorizar próxima ação e saúde
+limpar estrutura visual
+Fase 4 — Board
+redesenhar coluna
+redesenhar task card
+refinar tabela
+reescrever drawer
+simplificar criação de tarefa
+Fase 5 — Calendário de conteúdo
+redesenhar visualização mensal e semanal
+melhorar card de conteúdo
+reforçar status visuais
+integrar melhor conteúdo e tarefa
+Fase 6 — Refinamento transversal
+estados vazios
+skeletons
+motion
+feedback
+acessibilidade
+consistência de labels
+12. Sugestões concretas para React, Tailwind e shadcn
+Organização recomendada
+Estrutura
+components/layout
+components/navigation
+components/dashboard
+components/client-hub
+components/board
+components/calendar
+components/common
+components/feedback
+Componentes a criar
+AppSidebar
+PageHeader
+HeroFocusCard
+AlertStack
+ApprovalQueue
+AttentionClientsList
+ClientCockpitHeader
+ClientHealthPanel
+TaskCardCompact
+TaskDrawerV2
+BoardColumnHeader
+BoardToolbar
+PostingCalendarCard
+EmptyStateSmart
+SkeletonDashboard
+StatusChip
+PriorityChip
+NextActionCard
+Componentes a fundir ou simplificar
+blocos redundantes de resumo
+cards que fazem quase a mesma função com estilos diferentes
+toolbars inconsistentes
+chips com múltiplos padrões
+Tailwind
+criar tokens via CSS variables
+evitar classes soltas sem semântica
+padronizar spacing e radius
+usar utilitários previsíveis
+shadcn
+
+Usar como base, mas não aceitar o visual padrão sem adaptação.
+Personalizar:
+
+Dialog
+Drawer
+Tabs
+Tooltip
+DropdownMenu
+Input
+Command
+ScrollArea
+13. Componentes que devem ser criados, removidos ou fundidos
+Criar
+hero operacional
+cards de alerta semântico
+fila de aprovações compacta
+lista de clientes em atenção
+cockpit header do cliente
+board cards refinados
+chips semânticos unificados
+item de atividade padronizado
+Fundir
+cards de resumo similares
+blocos duplicados de contexto
+badges com variação excessiva
+filtros visuais fragmentados
+Remover
+qualquer componente que exista só para “encher visual”
+ornamentos sem função
+excesso de cards com mesma hierarquia
+labels desnecessárias em campos muito óbvios
+14. Decisões de produto que devem guiar o redesign
+O sistema é interno e operacional, não precisa parecer marketplace nem SaaS genérico.
+O foco é reduzir atrito diário, não impressionar em excesso.
+A prioridade é leitura rápida e ação imediata.
+O dashboard precisa comandar.
+O hub do cliente precisa orientar.
+O board precisa ser o lugar mais confortável do sistema.
+O calendário precisa ser escaneável e previsível.
+A estética deve ser sofisticada, mas subordinada à clareza.
+A densidade operacional deve ser mantida, porém melhor editada visualmente.
+Todo componente deve responder: isso ajuda a decidir, agir ou entender?
+Resumo executivo
+
+O seu sistema não precisa de mais escopo.
+
+Ele precisa de:
+
+nova hierarquia
+nova narrativa visual
+uma camada forte de consistência
+mais foco em ação
+mais conforto operacional
+
+A transformação principal é esta:
+
+antes
+
+um admin completo, funcional, mas pesado e pouco sedutor
+
+depois
+
+um centro de comando de marketing claro, rápido, elegante e gostoso de usar
+
+
+
+Agora transforme essa especificação em execução técnica.
+
+Quero:
+
+* mapa de componentes
+* árvore de páginas
+* reorganização da sidebar
+* layout do novo dashboard
+* layout do novo client hub
+* layout do board com referência de Asana
+* layout do posting calendar com referência de mLabs
+* design tokens completos
+* dark/light mode
+* microinterações com framer-motion
+* exemplos em React + Tailwind + shadcn
+* estratégia de refatoração incremental sem reescrever tudo do zero
+* ordem de implementação por prioridade

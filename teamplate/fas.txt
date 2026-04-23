@@ -1,0 +1,254 @@
+🧠 CODEX TASK — FIX GLOBAL + REFACTOR (CROMIA OS)
+🎯 OBJETIVO
+
+Corrigir bugs críticos (exportação, Supabase, portal, datas, upload) + melhorar UX/UI mantendo layout atual e performance.
+
+Stack: Next.js + React + TypeScript + Tailwind + Supabase
+
+🔴 1. EXPORTAÇÃO (html2canvas FAIL)
+AÇÃO
+garantir preload de imagens
+ativar CORS
+fallback base64
+const waitForImages = async (container: HTMLElement) => {
+  const images = Array.from(container.querySelectorAll('img'))
+  await Promise.all(
+    images.map(
+      (img) =>
+        new Promise((resolve) => {
+          if (img.complete) resolve(true)
+          else {
+            img.onload = () => resolve(true)
+            img.onerror = () => resolve(true)
+          }
+        })
+    )
+  )
+}
+html2canvas(element, {
+  useCORS: true,
+  allowTaint: true,
+  backgroundColor: null,
+  scale: 2,
+})
+🔴 2. TEXTO LATERAL (CALENDARIO DE CONTEUDO)
+<span
+  className="absolute left-0 text-xs tracking-[0.3em]"
+  style={{
+    writingMode: 'vertical-rl',
+    transform: 'rotate(180deg)',
+    height: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }}
+>
+  CALENDÁRIO DE CONTEÚDO
+</span>
+🔴 3. BOTÃO “NOVA SOLICITAÇÃO”
+const router = useRouter()
+
+<button onClick={() => router.push('/portal/solicitar')}>
+  + Nova solicitação
+</button>
+🔴 4. SUPABASE — FILTRO POR CLIENTE (CRÍTICO)
+const { data } = await supabase
+  .from('calendar_posts')
+  .select('*')
+  .eq('client_id', clientId)
+🔴 5. BUG DATA DUPLICADA (JAN → FEV)
+CORRIGIR SALVAMENTO:
+date: '2026-01-01'
+VALIDAÇÃO:
+const selectedDate = new Date(year, month, day)
+🔴 6. LOGO DINÂMICA (CHECKBOX)
+const logo = useClientLogo
+  ? client.logo_url
+  : '/calendario.png'
+
+const nome = useClientLogo
+  ? client.nome
+  : 'Cromia Marketing'
+🔴 7. UPLOAD DE ARQUIVO (GOOGLE DRIVE)
+<input type="file" onChange={handleUpload} />
+const handleUpload = async (file: File) => {
+  const base64 = await toBase64(file)
+
+  await fetch('/api/upload', {
+    method: 'POST',
+    body: JSON.stringify({ file: base64 }),
+  })
+}
+🔴 8. GOOGLE DRIVE LINK FIX
+https://drive.google.com/uc?id=FILE_ID
+🔴 9. APROVAÇÃO (WORKFLOW)
+STATUS:
+status: 'draft' | 'pending' | 'approved'
+AÇÃO:
+updateStatus(post.id, 'pending')
+🔴 10. PORTAL CLIENTE (ESTRUTURA)
+ABAS:
+Planejamento → preview calendário completo
+Aprovação → posts individuais
+🔴 11. FORMULÁRIO DE SOLICITAÇÃO (EXPANDIR)
+{
+  title: string
+  description: string
+  type: 'reel' | 'feed' | 'story'
+  social: 'instagram' | 'tiktok'
+  deadline: date
+  attachments: string[]
+}
+🔴 12. PORTAL NÃO PUXANDO DRIVE
+validar URL correta
+validar retorno da API
+garantir render de arquivos
+🔴 13. UI REFACTOR (SEM QUEBRAR LAYOUT)
+CARDS:
+className="
+bg-white/60
+backdrop-blur
+rounded-2xl
+border
+shadow-sm
+p-6
+"
+⚡ 14. PERFORMANCE
+const Editor = dynamic(() => import('./Editor'), { ssr: false })
+
+⚠️ REGRAS CRÍTICAS
+NÃO quebrar layout atual
+NÃO alterar preview vs export
+NÃO recriar componentes sem necessidade
+NÃO duplicar lógica
+VOCÊ PODE ACESSAR TODOS OS ARQUIVOS DO PROJETO E VER QUAL SENTIDO FAZ MAIS USAR SENTIASE LIVRE.
+
+💡 EXECUÇÃO COM BAIXO CONSUMO DE CRÉDITO
+
+Trabalhe em modo econômico:
+
+entregue somente código e ações objetivas
+evite explicações, contexto redundante e comentários longos
+prefira diffs cirúrgicos em vez de reescrever arquivos completos
+reutilize funções, hooks, componentes e utilitários existentes
+aplique DRY e evite duplicação de lógica ou interface
+não gere UI nova se a atual puder ser ajustada
+priorize correções críticas antes de refactors visuais
+preserve layout, regras de negócio e experiência atual
+só crie novas abstrações se reduzirem complexidade real
+
+🚀 CODEX TASK — AUTOMAÇÃO DE COMMITS POR PRIORIDADE
+🎯 OBJETIVO
+
+Executar correções e melhorias com:
+
+commits organizados por prioridade
+mensagens semânticas
+diffs pequenos e seguros
+fluxo automático até PR (opcional)
+🧠 MODO DE OPERAÇÃO
+
+Você deve atuar como:
+
+👉 Senior Engineer + Git Manager + Code Reviewer
+
+⚙️ FLUXO OBRIGATÓRIO
+1. ANALISAR O CÓDIGO
+identificar bugs críticos
+identificar falhas de lógica
+identificar problemas de performance
+mapear arquivos afetados
+2. AGRUPAR POR PRIORIDADE
+🔴 PRIORIDADE 1 (CRÍTICO)
+bugs que quebram sistema
+erros de dados (ex: duplicação de data)
+falhas de integração (Supabase / Drive)
+🟠 PRIORIDADE 2 (FUNCIONAL)
+features incompletas
+fluxo de aprovação
+upload / portal
+🟡 PRIORIDADE 3 (UX/UI)
+layout
+design
+ajustes visuais
+3. EXECUTAR EM BLOCOS DE COMMITS
+
+Para cada prioridade:
+
+🔹 gerar mudanças mínimas (diffs pequenos)
+🔹 NÃO reescrever arquivos inteiros
+🔹 aplicar DRY
+🔹 reutilizar código existente
+4. PADRÃO DE COMMIT (OBRIGATÓRIO)
+
+Use Conventional Commits:
+
+fix: corrigir duplicação de data no calendário
+fix: aplicar filtro client_id nas queries do Supabase
+feat: adicionar fluxo de aprovação de posts
+feat: implementar upload de arquivos via Google Drive
+refactor: melhorar estrutura do portal sem alterar layout
+5. EXECUÇÃO AUTOMÁTICA DE GIT
+
+Fluxo esperado:
+
+git checkout -b fix/calendar-critical
+git add .
+git commit -m "fix: corrigir duplicação de datas no calendário"
+git push origin fix/calendar-critical
+
+Depois:
+
+git checkout -b feat/approval-flow
+6. CRIAR PR AUTOMATICAMENTE (SE POSSÍVEL)
+título claro
+descrição objetiva
+listar mudanças
+destacar riscos
+7. VALIDAÇÕES ANTES DE COMMIT
+❌ não quebrar layout
+❌ não duplicar lógica
+❌ não remover regras de negócio
+✅ garantir funcionamento real
+⚡ EXECUÇÃO PARALELA (AVANÇADO)
+
+Se possível:
+
+usar git worktrees para rodar múltiplas tarefas em paralelo
+cada tarefa em uma branch separada
+evitar conflitos
+🔁 AUTOMAÇÃO CONTÍNUA
+
+Se houver múltiplos bugs:
+
+repetir fluxo automaticamente
+criar commits incrementais
+manter histórico limpo
+
+👉 Esse padrão é usado em automações reais de Codex para gerar PRs automaticamente a partir de tarefas
+
+💡 EXECUÇÃO COM BAIXO CONSUMO DE CRÉDITO
+
+Trabalhe em modo econômico:
+
+entregue somente código e ações objetivas
+evite explicações, contexto redundante e comentários longos
+prefira diffs cirúrgicos em vez de reescrever arquivos completos
+reutilize funções, hooks, componentes e utilitários existentes
+aplique DRY e evite duplicação de lógica ou interface
+não gere UI nova se a atual puder ser ajustada
+priorize correções críticas antes de refactors visuais
+preserve layout, regras de negócio e experiência atual
+só crie novas abstrações se reduzirem complexidade real
+🧠 MODO FINAL
+
+Quando terminar:
+
+listar commits criados
+listar arquivos alterados
+sugerir próximos passos
+🔥 RESULTADO ESPERADO
+código corrigido
+commits organizados
+histórico limpo
+pronto para deploy ou venda

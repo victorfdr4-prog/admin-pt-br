@@ -1,0 +1,1088 @@
+# DOCUMENTO TÉCNICO MESTRE — REDESIGN COMPLETO DO PAINEL INTERNO DE GESTÃO DE MARKETING
+
+## PAPEL QUE VOCÊ DEVE ASSUMIR
+
+Quero que você atue como uma combinação de:
+
+* Principal Product Designer
+* Principal UX Designer para SaaS operacionais
+* Principal Frontend Engineer
+* Especialista em React, Next.js App Router, Tailwind CSS, shadcn/ui, framer-motion e design systems escaláveis
+* Especialista em refatoração incremental de sistemas já existentes
+* Especialista em dashboards complexos, board/kanban, sistemas de produtividade, centros de comando operacionais e ferramentas internas de marketing
+
+Você deve agir como se fosse liderar o redesign completo do meu produto do ponto de vista de:
+
+* produto
+* arquitetura da informação
+* UX
+* UI
+* componentes
+* design system
+* código
+* implementação incremental
+* refinamento visual
+* experiência operacional real
+
+Seu objetivo não é me dar ideias genéricas.
+Seu objetivo é me devolver uma especificação extremamente profunda, prescritiva, prática, visualmente inteligente e tecnicamente implementável.
+
+---
+
+# 1. CONTEXTO DO PRODUTO
+
+Meu sistema já existe.
+Ele já está funcional.
+Ele já tem bastante escopo.
+Ele não é uma ideia inicial.
+
+Ou seja:
+o problema não é falta de feature.
+o problema é experiência, hierarquia, densidade visual, fluidez e prazer de uso.
+
+Meu sistema já possui áreas como:
+
+* Dashboard
+* Clientes
+* Hub do cliente
+* Board com kanban e tabela
+* Drawer de tarefa
+* Modal de criação
+* Aprovações
+* Aprovações de conteúdo
+* Documentos
+* Editor de documentos
+* Calendário de postagem
+* Financeiro
+* Drive
+* Time
+* Portal
+* Configurações
+* Timeline
+* Health badge
+* Next action
+* Notificações
+* Command palette
+* Quick create
+
+Portanto:
+
+## O QUE EU NÃO QUERO
+
+* não quero inventar novos módulos desnecessários
+* não quero virar CRM genérico
+* não quero transformar isso em SaaS vendável genérico
+* não quero reescrever tudo do zero
+* não quero abstrações vazias
+* não quero soluções bonitas porém fracas na operação
+
+## O QUE EU QUERO
+
+* redesign completo
+* mais usabilidade
+* mais clareza
+* mais vontade de uso diário
+* menos aparência de ERP
+* mais sofisticação
+* mais consistência entre telas
+* menos esforço cognitivo
+* mais ação e menos ruído
+* melhor hierarquia visual
+* melhor lógica de produto
+* melhor experiência operacional
+* board fortemente inspirado no Asana
+* calendário/editorial com clareza próxima do mLabs
+* organização estrutural com clareza tipo Monday
+* refinamento de motion e polimento tipo Linear
+
+---
+
+# 2. OBJETIVO GERAL
+
+Transformar o sistema atual, que já é funcional e completo em escopo, em uma plataforma interna premium de gestão de marketing, com:
+
+* experiência premium
+* leitura imediata
+* operação fluida
+* forte vontade de uso diário
+* conforto operacional
+* densidade bem editada
+* mais consistência
+* mais clareza
+* mais hierarquia
+* maior velocidade de tomada de decisão
+* melhor integração visual entre os módulos já existentes
+
+A grande transformação é esta:
+
+## ANTES
+
+um admin completo, funcional, mas pesado, com pouca alma de produto e pouca direção visual-operacional
+
+## DEPOIS
+
+um centro de comando de marketing elegante, rápido, coerente, confortável e extremamente funcional
+
+---
+
+# 3. DIAGNÓSTICO ESTRATÉGICO DO PROBLEMA
+
+Considere que o sistema atual sofre com estes problemas:
+
+## 3.1 O sistema está completo, mas a experiência não está editada
+
+Há escopo suficiente, mas a experiência parece acúmulo de funcionalidades, não produto desenhado.
+
+## 3.2 O dashboard não conduz
+
+Ele provavelmente resume, mas não orienta.
+Precisa virar central de decisão.
+
+## 3.3 O hub do cliente parece ficha ou página expandida
+
+Precisa virar cockpit operacional.
+
+## 3.4 O board parece funcional, mas ainda não parece inevitável no dia a dia
+
+Precisa virar o lugar mais confortável do sistema.
+
+## 3.5 O calendário precisa sair da sensação de grade e virar ferramenta editorial premium
+
+Precisa conversar melhor com a lógica de conteúdo.
+
+## 3.6 Aprovações e documentos provavelmente ainda parecem áreas separadas
+
+Precisam entrar no fluxo operacional do produto.
+
+## 3.7 Falta uma camada forte de consistência visual e comportamental
+
+Os módulos existem, mas o produto ainda não parece totalmente unificado.
+
+---
+
+# 4. FILOSOFIA CENTRAL DO REDESIGN
+
+Você deve seguir estas regras:
+
+## 4.1 O sistema é interno e operacional
+
+Não é marketplace.
+Não é SaaS “bonitinho”.
+Não é landing page.
+Não é vitrine.
+
+## 4.2 O foco é reduzir atrito diário
+
+Menos clique.
+Mais clareza.
+Mais velocidade mental.
+
+## 4.3 O sistema precisa parecer robusto, mas leve
+
+Sem parecer simples demais.
+Sem parecer ERP pesado.
+Sem parecer sistema antigo.
+
+## 4.4 A estética é subordinada à operação
+
+Beleza importa.
+Mas clareza, ação e escaneabilidade importam mais.
+
+## 4.5 Toda tela deve responder a uma pergunta operacional
+
+Exemplo:
+
+* o que preciso fazer agora?
+* o que está travado?
+* qual cliente precisa de atenção?
+* o que está em revisão?
+* o que vence hoje?
+
+---
+
+# 5. NOVA LÓGICA DE PRODUTO
+
+Quero o sistema organizado por estas camadas mentais:
+
+## CAMADA 1 — ATENÇÃO IMEDIATA
+
+Tudo que está:
+
+* atrasado
+* pendente
+* sem andamento
+* em risco
+* aguardando aprovação
+* vencendo hoje
+* sem atualização
+
+## CAMADA 2 — OPERAÇÃO
+
+Onde o trabalho acontece:
+
+* board
+* calendário
+* aprovações
+* criação
+* execução
+* cliente em andamento
+
+## CAMADA 3 — CONTEXTO E BASE
+
+Tudo que dá suporte:
+
+* documentos
+* drive
+* financeiro
+* portal
+* time
+* configurações
+
+Regra:
+primeiro ação
+depois operação
+depois contexto
+
+---
+
+# 6. REFERÊNCIAS OBRIGATÓRIAS
+
+## Asana
+
+Usar como referência principal para:
+
+* board
+* cards
+* densidade
+* leveza
+* escaneabilidade
+* hover
+* microações
+* conforto de uso contínuo
+
+## Monday
+
+Usar como referência para:
+
+* organização estrutural
+* clareza entre áreas
+* agrupamento operacional
+* visão ampla do sistema
+* linguagem de trabalho
+
+## mLabs
+
+Usar como referência para:
+
+* calendário editorial
+* estados de conteúdo
+* visão de postagem
+* clareza em gestão de publicações
+* conforto visual do planejamento
+
+## Linear
+
+Usar como referência para:
+
+* polimento
+* microinterações
+* velocidade percebida
+* motion sutil
+* acabamento premium
+
+## Notion
+
+Usar como referência secundária para:
+
+* limpeza visual
+* organização de blocos
+* respiro
+* sofisticação discreta
+
+---
+
+# 7. NOVA ARQUITETURA DE INFORMAÇÃO
+
+Quero esta organização:
+
+## Grupo 1 — Hoje
+
+* Visão geral
+* Foco do dia
+* Alertas
+* Aprovações pendentes
+
+## Grupo 2 — Operação
+
+* Board
+* Calendário
+* Aprovações
+* Documentos
+* Quick create
+
+## Grupo 3 — Clientes
+
+* Clientes
+* Hub do cliente
+* Saúde
+* Timeline
+* Próximas ações
+
+## Grupo 4 — Recursos
+
+* Financeiro
+* Drive
+* Time
+* Portal
+
+## Grupo 5 — Sistema
+
+* Configurações
+* Preferências
+* Permissões
+* Integrações futuras
+
+---
+
+# 8. NAVEGAÇÃO E SIDEBAR
+
+Quero uma sidebar premium, menos “admin comum”, mais “comando operacional”.
+
+## Estrutura desejada
+
+### Topo
+
+* busca global / trigger da command palette
+* quick create
+* notificações
+* toggle dark/light
+
+### Grupo Hoje
+
+* Visão geral
+
+### Grupo Operação
+
+* Board
+* Calendário
+* Aprovações
+* Documentos
+
+### Grupo Clientes
+
+* Clientes
+* Saúde
+* Atividade
+
+### Grupo Recursos
+
+* Financeiro
+* Drive
+* Time
+* Portal
+
+### Grupo Sistema
+
+* Configurações
+
+## Regras
+
+* sidebar colapsável
+* persistência do modo colapsado
+* tooltips no modo colapsado
+* badges de pendência
+* item ativo com fundo semântico forte
+* labels curtos
+* agrupamentos com bom respiro
+* ícones consistentes
+* navegação elegante em dark/light
+
+---
+
+# 9. DASHBOARD — ESPECIFICAÇÃO
+
+O dashboard deve virar central de comando.
+
+## Ordem obrigatória
+
+### 9.1 Hero operacional — Foco do dia
+
+Mostrar:
+
+* tarefas atrasadas
+* aprovações pendentes
+* cliente em risco
+* próxima ação
+
+Com CTAs:
+
+* abrir board
+* abrir aprovações
+* abrir cliente crítico
+
+### 9.2 Alertas e riscos
+
+Mostrar:
+
+* atrasos
+* sem atualização
+* travas
+* revisão pendente
+* entregas vencendo
+
+### 9.3 Aprovações pendentes
+
+Fila compacta e escaneável.
+
+### 9.4 Tarefas e conteúdos do dia
+
+Mistura de agenda e execução.
+
+### 9.5 Clientes em atenção
+
+Lista priorizada por risco.
+
+### 9.6 Resumo executivo
+
+Somente depois do operacional.
+
+### 9.7 Atividade recente
+
+Feed leve.
+
+---
+
+# 10. CLIENT HUB — ESPECIFICAÇÃO
+
+O client hub deve ser um cockpit.
+
+## Deve responder imediatamente:
+
+* como esse cliente está
+* o que está travado
+* o que precisa ser feito agora
+* o que depende de aprovação
+* o que está em produção
+* o que vai ao ar
+* quais docs importam
+* o que aconteceu recentemente
+
+## Estrutura
+
+### Topo
+
+* nome
+* saúde
+* status
+* próxima ação
+* botões principais
+
+### Summary strip
+
+* tarefas abertas
+* aprovações pendentes
+* conteúdos da semana
+* última atualização
+
+### Coluna principal
+
+* saúde operacional
+* execução em andamento
+* pipeline de conteúdo
+
+### Coluna lateral
+
+* próxima ação
+* documentos úteis
+* atividade recente
+
+### Abas sugeridas
+
+* visão geral
+* execução
+* conteúdo
+* documentos
+* financeiro
+* atividade
+
+---
+
+# 11. BOARD — ESPECIFICAÇÃO
+
+Quero board com referência muito forte de Asana.
+
+## Princípios
+
+* escaneabilidade acima de decoração
+* densidade útil
+* movimento leve
+* conforto de uso contínuo
+* o drawer é o centro da tarefa
+
+## Kanban
+
+Cada coluna deve ter:
+
+* título
+* contador
+* cor sutil
+* ação de adicionar
+* menu contextual
+
+## Cards
+
+Cada card deve mostrar:
+
+* título
+* cliente
+* prioridade
+* status
+* prazo
+* responsável
+* comentários e anexos quando útil
+* quick actions sutis
+* drag handle sutil
+
+## Quick actions no hover
+
+* abrir
+* editar
+* duplicar
+* concluir
+* mover
+* menu contextual
+
+## Tabela
+
+A tabela deve:
+
+* parecer moderna
+* ter boa densidade
+* suportar seleção múltipla
+* ter bulk actions
+* ter ordenação
+* ter filtros
+* preservar mesma semântica do kanban
+
+## Drawer premium
+
+Quero:
+
+* header forte
+* título editável
+* status
+* prioridade
+* prazo
+* responsável
+* descrição
+* checklist
+* comentários
+* atividade
+* tabs internas reais
+* footer com ações claras
+
+## Modal de criação
+
+Modo rápido e modo expandido.
+
+---
+
+# 12. CALENDÁRIO — ESPECIFICAÇÃO
+
+Quero um calendário editorial premium, próximo da clareza do mLabs.
+
+## Objetivos
+
+* leitura rápida
+* conforto editorial
+* clareza de status
+* relação clara com execução
+
+## Visualizações
+
+* mês
+* semana
+* agenda
+* por cliente
+
+## Estados
+
+* ideia
+* produção
+* revisão
+* aprovado
+* agendado
+* publicado
+
+## Cada card deve mostrar
+
+* título
+* cliente
+* canal
+* horário
+* status
+* responsável
+
+## O calendário deve ter
+
+* hoje destacado
+* sidebar de resumo editorial
+* filtros úteis
+* drag and drop confortável
+* empty state inteligente
+* skeleton consistente
+
+---
+
+# 13. APROVAÇÕES — ESPECIFICAÇÃO
+
+Aprovações devem parecer fila operacional premium.
+
+## O usuário precisa enxergar:
+
+* o que está esperando
+* de quem é
+* o que vence hoje
+* o que bloqueia
+* o que aprovar primeiro
+
+## Quero:
+
+* summary cards
+* rows premium
+* CTA visualizar
+* CTA solicitar ajuste
+* CTA aprovar
+* empty state
+* skeleton
+
+---
+
+# 14. DOCUMENTOS — ESPECIFICAÇÃO
+
+Documentos devem parecer base viva de trabalho.
+
+## Quero:
+
+* lista premium
+* resumo superior
+* status semântico
+* atualização recente
+* conexão com cliente
+* busca
+* filtros
+
+## Editor premium
+
+* título editável
+* cliente
+* status
+* área principal de escrita
+* lateral com resumo
+* lateral com atividade
+* ações claras
+* visual limpo
+* sensação profissional
+
+---
+
+# 15. COMMAND PALETTE — ESPECIFICAÇÃO
+
+Quero command palette real.
+
+## Deve abrir com
+
+* Cmd + K
+* Ctrl + K
+
+## Deve permitir
+
+* abrir páginas
+* abrir clientes
+* abrir tarefas
+* abrir documentos
+* abrir calendário
+* abrir aprovações
+* criar tarefa
+* criar conteúdo
+* criar documento
+
+## Ela deve funcionar como:
+
+* busca global
+* atalho operacional
+* menu de ações
+
+---
+
+# 16. QUICK CREATE GLOBAL
+
+Deve estar disponível em sidebar e topbar.
+
+## Criar:
+
+* tarefa
+* conteúdo
+* documento
+* cliente
+* aprovação
+
+Em produção, usar shadcn DropdownMenu ou equivalente.
+
+---
+
+# 17. DESIGN SYSTEM COMPLETO
+
+## Princípios
+
+* clareza
+* confiança
+* velocidade
+* sofisticação discreta
+* operação sem atrito
+
+## Tokens de cor
+
+### Light
+
+background: #F7F8FA
+surface: #FFFFFF
+surface-secondary: #F3F4F6
+border: #E5E7EB
+text-primary: #111827
+text-secondary: #6B7280
+text-tertiary: #9CA3AF
+primary: #5B5CE2
+primary-soft: #EEF0FF
+success: #16A34A
+success-soft: #DCFCE7
+warning: #D97706
+warning-soft: #FEF3C7
+danger: #DC2626
+danger-soft: #FEE2E2
+info: #2563EB
+info-soft: #DBEAFE
+
+### Dark
+
+background: #0B1020
+surface: #111827
+surface-secondary: #172033
+border: #243045
+text-primary: #F3F4F6
+text-secondary: #CBD5E1
+text-tertiary: #94A3B8
+primary: #818CF8
+primary-soft: rgba(129, 140, 248, 0.12)
+success: #22C55E
+success-soft: rgba(34, 197, 94, 0.14)
+warning: #F59E0B
+warning-soft: rgba(245, 158, 11, 0.14)
+danger: #EF4444
+danger-soft: rgba(239, 68, 68, 0.14)
+info: #60A5FA
+info-soft: rgba(96, 165, 250, 0.14)
+
+## Tipografia
+
+Fonte:
+
+* Inter ou Geist
+
+Escala:
+
+* display 32/40
+* h1 28/36
+* h2 24/32
+* h3 20/28
+* title 16/24
+* body 14/22
+* caption 12/18
+
+## Radius
+
+* cards 16
+* inputs 12
+* buttons 10
+* pills/chips 999
+* drawers/modals 20
+
+## Shadows
+
+Leves e elegantes.
+
+## Spacing
+
+4 / 8 / 12 / 16 / 20 / 24 / 32 / 40
+
+---
+
+# 18. MOTION E MICROINTERAÇÕES
+
+Usar framer-motion com sutileza.
+
+## Regras
+
+* hover card: y -2
+* fade/slide curto
+* drawer com entrada elegante
+* tabs com transição curta
+* nada chamativo
+* nada lúdico demais
+
+## Durações
+
+* hover 120-160ms
+* drawer 180-220ms
+* fade 180ms
+* micro feedback 100-140ms
+
+---
+
+# 19. UX WRITING
+
+A linguagem do produto deve ser:
+
+* operacional
+* simples
+* direta
+* clara
+* sem burocracia
+
+Exemplos desejados:
+
+* aguardando aprovação
+* sem atualização há 4 dias
+* próxima ação
+* clientes
+* conteúdos da semana
+
+---
+
+# 20. PILHA TÉCNICA OBRIGATÓRIA
+
+Quero tudo baseado em:
+
+* React
+* Next.js App Router
+* Tailwind CSS
+* shadcn/ui
+* framer-motion
+* lucide-react
+* next-themes
+
+---
+
+# 21. ESTRATÉGIA TÉCNICA
+
+Regras:
+
+1. não reescrever o sistema do zero
+2. preservar hooks, stores, loaders e lógica de dados
+3. trocar primeiro a camada de apresentação
+4. migrar por feature
+5. criar componentes novos e ir plugando
+6. evitar mexer no domínio logo no começo
+7. refatoração incremental real
+
+---
+
+# 22. ESTRUTURA DE PASTAS SUGERIDA
+
+/app
+/dashboard
+/clients
+/clients/[id]
+/board
+/calendar
+/approvals
+/documents
+/documents/[id]
+/finance
+/drive
+/team
+/portal
+/settings
+
+/components
+/layout
+/navigation
+/ui
+/dashboard
+/clients
+/board
+/calendar
+/approvals
+/documents
+/feedback
+/shared
+
+/providers
+/hooks
+/styles
+
+---
+
+# 23. PERSISTÊNCIA
+
+Quero persistência via localStorage inicialmente para:
+
+* modo board
+* filtros do board
+* visualização do calendário
+* sidebar colapsada
+* preferências de UI
+
+Crie hook:
+usePersistedState
+
+---
+
+# 24. RESPONSIVIDADE
+
+## Desktop
+
+máxima densidade controlada
+
+## Tablet
+
+simplificação e scroll inteligente
+
+## Mobile
+
+stack vertical e foco operacional
+
+### Board
+
+* desktop: 4 colunas
+* tablet: scroll horizontal
+* mobile: modo simplificado
+
+### Client hub
+
+* summary strip adapta
+* lateral vai para baixo
+
+### Calendar
+
+* usar agenda/semana em telas menores
+* reduzir colunas simultâneas
+
+---
+
+# 25. EMPTY STATES E SKELETONS
+
+Quero empty states para:
+
+* board
+* calendário
+* aprovações
+* documentos
+
+Regras:
+
+* explicar o vazio
+* sugerir próxima ação
+* manter elegância
+
+Quero skeletons para:
+
+* dashboard
+* board
+* calendário
+* aprovações
+* documentos
+* client hub
+
+---
+
+# 26. ENTREGÁVEIS QUE VOCÊ DEVE ME DAR NA SUA RESPOSTA
+
+Quero sua resposta organizada exatamente assim:
+
+1. diagnóstico objetivo do produto atual
+2. nova arquitetura de informação
+3. nova navegação e sidebar
+4. blueprint detalhado do dashboard
+5. blueprint detalhado do client hub
+6. blueprint detalhado do board
+7. blueprint detalhado do calendário
+8. blueprint detalhado de aprovações
+9. blueprint detalhado de documentos e editor
+10. design system completo
+11. estratégia técnica de implementação
+12. estrutura de pastas
+13. lista de componentes a criar
+14. lista de componentes a fundir/remover
+15. estratégia de refatoração incremental
+16. exemplos reais em React + Tailwind + shadcn
+17. tokens CSS
+18. dark/light theme
+19. motion guidelines
+20. responsividade
+21. persistência
+22. empty states e skeletons
+23. ordem ideal de implementação
+24. checklist final de polish
+
+---
+
+# 27. CÓDIGO QUE EU QUERO QUE VOCÊ ESCREVA
+
+Quero exemplos reais para:
+
+* AppShell
+* AppSidebar
+* AppTopbar
+* PageHeader
+* SectionBlock
+* HeroFocusCard
+* BoardToolbar
+* BoardKanbanView
+* BoardTableView
+* TaskCardPremium
+* TaskDrawerPremium
+* TaskCreateDialogV2
+* ClientCockpitHeader
+* ClientHealthPanel
+* NextActionCard
+* PostingCalendarCardPremium
+* CalendarToolbar
+* ApprovalQueuePremiumRow
+* DocumentListItemPremium
+* DocumentEditorPremium
+* CommandPalette
+* QuickCreateMenu
+* usePersistedState
+
+---
+
+# 28. REGRAS DE QUALIDADE DA SUA RESPOSTA
+
+Quero:
+
+* máxima profundidade
+* máxima especificidade
+* sem generalidades
+* sem resumo curto
+* sem simplificar demais
+* sem mudar de assunto
+* com decisões concretas
+* com lógica de produto
+* com lógica de UX
+* com lógica de código
+* como se você fosse realmente liderar a execução
+
+---
+
+# 29. RESULTADO FINAL ESPERADO
+
+Quero sair da sua resposta com uma especificação completa e prescritiva para transformar meu sistema atual em um produto interno premium de gestão de marketing, com:
+
+* board com forte referência de Asana
+* calendário com clareza de mLabs
+* estrutura de Monday
+* polimento de Linear
+* React + Tailwind + shadcn + framer-motion
+* estratégia de refatoração incremental
+* sem reescrever o sistema do zero

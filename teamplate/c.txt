@@ -1,0 +1,810 @@
+Quarta etapa — componentes avançados e páginas refinadas
+Objetivo
+
+Evoluir a base criada na terceira etapa para um nível mais próximo de uso real, adicionando:
+
+ferramentas operacionais
+estados melhores
+drawers mais ricos
+listas priorizadas
+dashboards menos genéricos
+fluxo mais gostoso de usar
+1. BoardToolbar
+src/components/board/board-toolbar.tsx
+"use client";
+
+import { Filter, ListFilter, Search, SlidersHorizontal } from "lucide-react";
+
+export function BoardToolbar() {
+  return (
+    <div className="rounded-xl border border-border bg-surface p-4 shadow-sm">
+      <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+        <div className="flex min-w-0 flex-1 flex-col gap-3 md:flex-row md:items-center">
+          <div className="flex h-10 min-w-0 flex-1 items-center gap-2 rounded-md border border-border bg-surfaceSecondary px-3">
+            <Search size={16} className="text-textTertiary" />
+            <input
+              placeholder="Buscar tarefa, cliente ou responsável"
+              className="w-full bg-transparent text-sm text-textPrimary outline-none placeholder:text-textTertiary"
+            />
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <button className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-sm text-textSecondary transition hover:bg-surfaceSecondary hover:text-textPrimary">
+              <Filter size={15} />
+              Cliente
+            </button>
+
+            <button className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-sm text-textSecondary transition hover:bg-surfaceSecondary hover:text-textPrimary">
+              <ListFilter size={15} />
+              Status
+            </button>
+
+            <button className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-sm text-textSecondary transition hover:bg-surfaceSecondary hover:text-textPrimary">
+              <SlidersHorizontal size={15} />
+              Mais filtros
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center gap-2">
+          <button className="rounded-md border border-border bg-surface px-3 py-2 text-sm font-medium text-textPrimary transition hover:bg-surfaceSecondary">
+            Tabela
+          </button>
+          <button className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-white transition hover:opacity-95">
+            Kanban
+          </button>
+          <button className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white transition hover:opacity-95">
+            Nova tarefa
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+2. TaskDrawerV2
+src/components/board/task-drawer-v2.tsx
+"use client";
+
+import { CalendarDays, CheckSquare, MessageSquare, User } from "lucide-react";
+import { StatusChip } from "@/components/ui/status-chip";
+
+type TaskDrawerV2Props = {
+  open?: boolean;
+};
+
+export function TaskDrawerV2({ open = true }: TaskDrawerV2Props) {
+  if (!open) return null;
+
+  return (
+    <aside className="fixed right-0 top-0 z-40 h-screen w-full max-w-xl border-l border-border bg-surface shadow-lg">
+      <div className="flex h-full flex-col">
+        <div className="border-b border-border px-6 py-5">
+          <div className="flex items-start justify-between gap-4">
+            <div className="space-y-3">
+              <input
+                defaultValue="Criar campanha de inauguração"
+                className="w-full bg-transparent text-xl font-semibold text-textPrimary outline-none"
+              />
+
+              <div className="flex flex-wrap gap-2">
+                <StatusChip label="Em andamento" variant="info" />
+                <StatusChip label="Alta prioridade" variant="danger" />
+                <StatusChip label="Hoje" variant="warning" />
+              </div>
+            </div>
+
+            <button className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-textSecondary hover:bg-surfaceSecondary hover:text-textPrimary">
+              Fechar
+            </button>
+          </div>
+        </div>
+
+        <div className="flex-1 space-y-6 overflow-y-auto px-6 py-6">
+          <section className="space-y-3">
+            <h3 className="text-sm font-semibold text-textPrimary">Resumo</h3>
+            <div className="grid gap-3 md:grid-cols-2">
+              <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+                <div className="mb-1 flex items-center gap-2 text-sm font-medium text-textPrimary">
+                  <User size={15} />
+                  Responsável
+                </div>
+                <p className="text-sm text-textSecondary">Victor</p>
+              </div>
+
+              <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+                <div className="mb-1 flex items-center gap-2 text-sm font-medium text-textPrimary">
+                  <CalendarDays size={15} />
+                  Prazo
+                </div>
+                <p className="text-sm text-textSecondary">Hoje às 17:00</p>
+              </div>
+
+              <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+                <div className="mb-1 text-sm font-medium text-textPrimary">Cliente</div>
+                <p className="text-sm text-textSecondary">Daniela Estética</p>
+              </div>
+
+              <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+                <div className="mb-1 text-sm font-medium text-textPrimary">Status</div>
+                <p className="text-sm text-textSecondary">Em andamento</p>
+              </div>
+            </div>
+          </section>
+
+          <section className="space-y-3">
+            <h3 className="text-sm font-semibold text-textPrimary">Descrição</h3>
+            <textarea
+              defaultValue="Criar estrutura inicial da campanha de inauguração com foco em awareness e primeiros contatos."
+              className="min-h-[120px] w-full rounded-lg border border-border bg-surfaceSecondary p-4 text-sm text-textPrimary outline-none"
+            />
+          </section>
+
+          <section className="space-y-3">
+            <div className="flex items-center gap-2">
+              <CheckSquare size={16} />
+              <h3 className="text-sm font-semibold text-textPrimary">Checklist</h3>
+            </div>
+
+            <div className="space-y-2">
+              {[
+                "Definir conceito criativo",
+                "Escrever copy inicial",
+                "Separar referências visuais",
+              ].map((item) => (
+                <label
+                  key={item}
+                  className="flex items-center gap-3 rounded-lg border border-border bg-surfaceSecondary px-4 py-3"
+                >
+                  <input type="checkbox" />
+                  <span className="text-sm text-textPrimary">{item}</span>
+                </label>
+              ))}
+            </div>
+          </section>
+
+          <section className="space-y-3">
+            <div className="flex items-center gap-2">
+              <MessageSquare size={16} />
+              <h3 className="text-sm font-semibold text-textPrimary">Comentários</h3>
+            </div>
+
+            <div className="space-y-3">
+              <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+                <div className="mb-1 text-sm font-medium text-textPrimary">Victor</div>
+                <p className="text-sm text-textSecondary">
+                  Vamos priorizar essa tarefa hoje para liberar o restante do calendário.
+                </p>
+              </div>
+
+              <textarea
+                placeholder="Escreva um comentário..."
+                className="min-h-[90px] w-full rounded-lg border border-border bg-surfaceSecondary p-4 text-sm text-textPrimary outline-none"
+              />
+            </div>
+          </section>
+
+          <section className="space-y-3">
+            <h3 className="text-sm font-semibold text-textPrimary">Atividade</h3>
+            <div className="space-y-2 text-sm text-textSecondary">
+              <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+                Status alterado para “Em andamento” há 2 horas
+              </div>
+              <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+                Prazo atualizado ontem às 18:42
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div className="border-t border-border px-6 py-4">
+          <div className="flex items-center justify-between gap-3">
+            <button className="rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-textPrimary hover:bg-surfaceSecondary">
+              Excluir
+            </button>
+            <div className="flex items-center gap-2">
+              <button className="rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-textPrimary hover:bg-surfaceSecondary">
+                Cancelar
+              </button>
+              <button className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:opacity-95">
+                Salvar alterações
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  );
+}
+3. TaskCreateDialogV2
+src/components/board/task-create-dialog-v2.tsx
+"use client";
+
+export function TaskCreateDialogV2() {
+  return (
+    <div className="rounded-xl border border-border bg-surface p-6 shadow-md">
+      <div className="space-y-5">
+        <div>
+          <h2 className="text-lg font-semibold text-textPrimary">Nova tarefa</h2>
+          <p className="mt-1 text-sm text-textSecondary">
+            Crie uma tarefa com os dados essenciais e refine depois no drawer.
+          </p>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="space-y-2 md:col-span-2">
+            <label className="text-sm font-medium text-textPrimary">Título</label>
+            <input
+              className="h-11 w-full rounded-md border border-border bg-surfaceSecondary px-3 text-sm outline-none"
+              placeholder="Ex: Revisar reels institucional"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-textPrimary">Cliente</label>
+            <select className="h-11 w-full rounded-md border border-border bg-surfaceSecondary px-3 text-sm outline-none">
+              <option>Selecionar cliente</option>
+              <option>Daniela Estética</option>
+            </select>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-textPrimary">Responsável</label>
+            <select className="h-11 w-full rounded-md border border-border bg-surfaceSecondary px-3 text-sm outline-none">
+              <option>Selecionar responsável</option>
+              <option>Victor</option>
+            </select>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-textPrimary">Status</label>
+            <select className="h-11 w-full rounded-md border border-border bg-surfaceSecondary px-3 text-sm outline-none">
+              <option>A fazer</option>
+              <option>Em andamento</option>
+              <option>Revisão</option>
+            </select>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-textPrimary">Prazo</label>
+            <input
+              type="date"
+              className="h-11 w-full rounded-md border border-border bg-surfaceSecondary px-3 text-sm outline-none"
+            />
+          </div>
+
+          <div className="space-y-2 md:col-span-2">
+            <label className="text-sm font-medium text-textPrimary">Descrição</label>
+            <textarea
+              className="min-h-[110px] w-full rounded-md border border-border bg-surfaceSecondary p-3 text-sm outline-none"
+              placeholder="Detalhes opcionais"
+            />
+          </div>
+        </div>
+
+        <div className="flex items-center justify-end gap-2">
+          <button className="rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-textPrimary hover:bg-surfaceSecondary">
+            Cancelar
+          </button>
+          <button className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:opacity-95">
+            Criar tarefa
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+4. ApprovalQueue
+src/components/dashboard/approval-queue.tsx
+import { StatusChip } from "@/components/ui/status-chip";
+
+const approvals = [
+  {
+    title: "Reels institucional",
+    client: "Daniela Estética",
+    type: "Conteúdo",
+    status: "Aguardando",
+  },
+  {
+    title: "Carrossel promocional",
+    client: "Clínica Vitale",
+    type: "Conteúdo",
+    status: "Revisão",
+  },
+];
+
+export function ApprovalQueue() {
+  return (
+    <div className="space-y-3">
+      {approvals.map((item) => (
+        <div
+          key={item.title}
+          className="flex items-center justify-between gap-4 rounded-lg border border-border bg-surfaceSecondary p-4"
+        >
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium text-textPrimary">{item.title}</p>
+            <p className="mt-1 text-xs text-textSecondary">
+              {item.client} • {item.type}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <StatusChip
+              label={item.status}
+              variant={item.status === "Aguardando" ? "warning" : "info"}
+            />
+            <button className="rounded-md border border-border bg-surface px-3 py-1.5 text-xs font-medium text-textPrimary hover:bg-surfaceSecondary">
+              Abrir
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+5. AttentionClientsList
+src/components/dashboard/attention-clients-list.tsx
+import { StatusChip } from "@/components/ui/status-chip";
+
+const clients = [
+  {
+    name: "Daniela Estética",
+    issue: "Sem atualização há 4 dias",
+    nextAction: "Revisar conteúdo pendente",
+    health: "Atenção",
+  },
+  {
+    name: "Clínica Vitale",
+    issue: "2 tarefas vencem hoje",
+    nextAction: "Reorganizar prioridades",
+    health: "Risco leve",
+  },
+];
+
+export function AttentionClientsList() {
+  return (
+    <div className="space-y-3">
+      {clients.map((client) => (
+        <div
+          key={client.name}
+          className="rounded-lg border border-border bg-surfaceSecondary p-4"
+        >
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <p className="text-sm font-medium text-textPrimary">{client.name}</p>
+            <StatusChip
+              label={client.health}
+              variant={client.health === "Atenção" ? "warning" : "danger"}
+            />
+          </div>
+
+          <p className="text-sm text-textSecondary">{client.issue}</p>
+          <p className="mt-2 text-xs text-textTertiary">
+            Próxima ação: {client.nextAction}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+6. ExecutiveSummary
+src/components/dashboard/executive-summary.tsx
+const stats = [
+  { label: "Clientes ativos", value: "12" },
+  { label: "Tarefas concluídas na semana", value: "46" },
+  { label: "Conteúdos publicados", value: "18" },
+  { label: "Pendências em aberto", value: "9" },
+];
+
+export function ExecutiveSummary() {
+  return (
+    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      {stats.map((item) => (
+        <div
+          key={item.label}
+          className="rounded-xl border border-border bg-surface p-5 shadow-sm"
+        >
+          <p className="text-sm text-textSecondary">{item.label}</p>
+          <p className="mt-3 text-2xl font-semibold text-textPrimary">{item.value}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+7. RecentActivityFeed
+src/components/dashboard/recent-activity-feed.tsx
+const activities = [
+  "Reels institucional foi enviado para aprovação há 35 min",
+  "Tarefa “Revisar copy de lançamento” foi concluída há 1h",
+  "Documento “Planejamento Abril” foi atualizado hoje",
+];
+
+export function RecentActivityFeed() {
+  return (
+    <div className="space-y-3">
+      {activities.map((item) => (
+        <div
+          key={item}
+          className="rounded-lg border border-border bg-surfaceSecondary p-4 text-sm text-textSecondary"
+        >
+          {item}
+        </div>
+      ))}
+    </div>
+  );
+}
+8. CalendarToolbar
+src/components/calendar/calendar-toolbar.tsx
+"use client";
+
+import { Filter, Search } from "lucide-react";
+
+export function CalendarToolbar() {
+  return (
+    <div className="rounded-xl border border-border bg-surface p-4 shadow-sm">
+      <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
+        <div className="flex min-w-0 flex-1 flex-col gap-3 md:flex-row md:items-center">
+          <div className="flex h-10 min-w-0 flex-1 items-center gap-2 rounded-md border border-border bg-surfaceSecondary px-3">
+            <Search size={16} className="text-textTertiary" />
+            <input
+              placeholder="Buscar conteúdo ou cliente"
+              className="w-full bg-transparent text-sm text-textPrimary outline-none placeholder:text-textTertiary"
+            />
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            <button className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-textSecondary hover:bg-surfaceSecondary hover:text-textPrimary">
+              Cliente
+            </button>
+            <button className="inline-flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-sm text-textSecondary hover:bg-surfaceSecondary hover:text-textPrimary">
+              <Filter size={15} />
+              Status
+            </button>
+            <button className="rounded-md border border-border bg-surface px-3 py-2 text-sm text-textSecondary hover:bg-surfaceSecondary hover:text-textPrimary">
+              Canal
+            </button>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button className="rounded-md border border-border bg-surface px-3 py-2 text-sm font-medium text-textPrimary hover:bg-surfaceSecondary">
+            Semana
+          </button>
+          <button className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-white">
+            Mês
+          </button>
+          <button className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white">
+            Novo conteúdo
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+9. EmptyStateSmart
+src/components/ui/empty-state-smart.tsx
+type EmptyStateSmartProps = {
+  title: string;
+  description: string;
+  actionLabel?: string;
+};
+
+export function EmptyStateSmart({
+  title,
+  description,
+  actionLabel,
+}: EmptyStateSmartProps) {
+  return (
+    <div className="rounded-xl border border-dashed border-border bg-surface p-8 text-center">
+      <div className="mx-auto max-w-md">
+        <h3 className="text-base font-semibold text-textPrimary">{title}</h3>
+        <p className="mt-2 text-sm text-textSecondary">{description}</p>
+        {actionLabel ? (
+          <button className="mt-4 rounded-md bg-primary px-4 py-2 text-sm font-medium text-white">
+            {actionLabel}
+          </button>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+10. Skeletons
+src/components/feedback/skeletons.tsx
+export function SkeletonBlock({ className = "" }: { className?: string }) {
+  return <div className={`animate-pulse rounded-lg bg-surfaceSecondary ${className}`} />;
+}
+
+export function DashboardSkeleton() {
+  return (
+    <div className="space-y-6">
+      <SkeletonBlock className="h-32 w-full" />
+      <div className="grid gap-6 xl:grid-cols-2">
+        <SkeletonBlock className="h-64 w-full" />
+        <SkeletonBlock className="h-64 w-full" />
+      </div>
+      <div className="grid gap-4 xl:grid-cols-4">
+        <SkeletonBlock className="h-28 w-full" />
+        <SkeletonBlock className="h-28 w-full" />
+        <SkeletonBlock className="h-28 w-full" />
+        <SkeletonBlock className="h-28 w-full" />
+      </div>
+    </div>
+  );
+}
+11. Dashboard refinada
+src/app/dashboard/page.tsx
+import { AppShell } from "@/components/layout/app-shell";
+import { PageHeader } from "@/components/layout/page-header";
+import { SectionBlock } from "@/components/layout/section-block";
+import { HeroFocusCard } from "@/components/dashboard/hero-focus-card";
+import { ApprovalQueue } from "@/components/dashboard/approval-queue";
+import { AttentionClientsList } from "@/components/dashboard/attention-clients-list";
+import { ExecutiveSummary } from "@/components/dashboard/executive-summary";
+import { RecentActivityFeed } from "@/components/dashboard/recent-activity-feed";
+
+export default function DashboardPage() {
+  return (
+    <AppShell>
+      <div className="space-y-6">
+        <PageHeader
+          title="Visão geral"
+          description="Acompanhe prioridades, aprovações e clientes que exigem atenção hoje."
+          actions={
+            <>
+              <button className="rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-textPrimary hover:bg-surfaceSecondary">
+                Exportar
+              </button>
+              <button className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:opacity-95">
+                Criar rápido
+              </button>
+            </>
+          }
+        />
+
+        <HeroFocusCard />
+
+        <div className="grid gap-6 xl:grid-cols-[1fr_1fr]">
+          <SectionBlock
+            title="Aprovações pendentes"
+            description="O que está aguardando retorno ou validação."
+          >
+            <ApprovalQueue />
+          </SectionBlock>
+
+          <SectionBlock
+            title="Clientes em atenção"
+            description="Quem exige ação rápida hoje."
+          >
+            <AttentionClientsList />
+          </SectionBlock>
+        </div>
+
+        <ExecutiveSummary />
+
+        <SectionBlock
+          title="Atividade recente"
+          description="O que foi movimentado nas últimas horas."
+        >
+          <RecentActivityFeed />
+        </SectionBlock>
+      </div>
+    </AppShell>
+  );
+}
+12. Board refinada
+src/app/board/page.tsx
+import { AppShell } from "@/components/layout/app-shell";
+import { PageHeader } from "@/components/layout/page-header";
+import { BoardToolbar } from "@/components/board/board-toolbar";
+import { BoardColumnHeader } from "@/components/board/board-column-header";
+import { TaskCardCompact } from "@/components/board/task-card-compact";
+
+const columns = [
+  { title: "A fazer", count: 4, accentClass: "bg-slate-400" },
+  { title: "Em andamento", count: 3, accentClass: "bg-amber-400" },
+  { title: "Revisão", count: 2, accentClass: "bg-violet-400" },
+  { title: "Concluído", count: 6, accentClass: "bg-emerald-400" },
+];
+
+export default function BoardPage() {
+  return (
+    <AppShell>
+      <div className="space-y-6">
+        <PageHeader
+          title="Board"
+          description="Gerencie tarefas com uma experiência mais limpa, leve e escaneável."
+          actions={
+            <button className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:opacity-95">
+              Nova tarefa
+            </button>
+          }
+        />
+
+        <BoardToolbar />
+
+        <div className="grid gap-5 xl:grid-cols-4">
+          {columns.map((column) => (
+            <div
+              key={column.title}
+              className="rounded-xl border border-border bg-surfaceSecondary/50 p-3"
+            >
+              <BoardColumnHeader
+                title={column.title}
+                count={column.count}
+                accentClass={column.accentClass}
+              />
+
+              <div className="space-y-3">
+                <TaskCardCompact />
+                <TaskCardCompact />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </AppShell>
+  );
+}
+13. Calendar refinada
+src/app/calendar/page.tsx
+import { AppShell } from "@/components/layout/app-shell";
+import { PageHeader } from "@/components/layout/page-header";
+import { CalendarToolbar } from "@/components/calendar/calendar-toolbar";
+import { PostingCalendarCard } from "@/components/calendar/posting-calendar-card";
+
+export default function CalendarPage() {
+  return (
+    <AppShell>
+      <div className="space-y-6">
+        <PageHeader
+          title="Calendário"
+          description="Visualize o planejamento de conteúdo com mais clareza e conforto operacional."
+          actions={
+            <button className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:opacity-95">
+              Novo conteúdo
+            </button>
+          }
+        />
+
+        <CalendarToolbar />
+
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {["Segunda", "Terça", "Quarta", "Quinta"].map((day) => (
+            <div
+              key={day}
+              className="rounded-xl border border-border bg-surface p-4 shadow-sm"
+            >
+              <div className="mb-3 flex items-center justify-between">
+                <div className="text-sm font-semibold text-textPrimary">{day}</div>
+                <div className="text-xs text-textTertiary">2 itens</div>
+              </div>
+
+              <div className="space-y-3">
+                <PostingCalendarCard />
+                <PostingCalendarCard />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </AppShell>
+  );
+}
+14. Client hub refinada
+src/app/clients/[id]/page.tsx
+import { AppShell } from "@/components/layout/app-shell";
+import { SectionBlock } from "@/components/layout/section-block";
+import { ClientCockpitHeader } from "@/components/clients/client-cockpit-header";
+
+export default function ClientHubPage() {
+  return (
+    <AppShell>
+      <div className="space-y-6">
+        <ClientCockpitHeader />
+
+        <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr]">
+          <div className="space-y-6">
+            <SectionBlock
+              title="Execução em andamento"
+              description="Tarefas e entregas que estão movimentando esse cliente."
+            >
+              <div className="space-y-3">
+                <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+                  Criar roteiro de reels institucional
+                </div>
+                <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+                  Revisar carrossel de lançamento
+                </div>
+                <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+                  Ajustar texto do story promocional
+                </div>
+              </div>
+            </SectionBlock>
+
+            <SectionBlock
+              title="Conteúdos planejados"
+              description="Próximos conteúdos previstos no calendário."
+            >
+              <div className="space-y-3">
+                <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+                  Reels bastidores — sexta-feira
+                </div>
+                <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+                  Story promocional — segunda-feira
+                </div>
+              </div>
+            </SectionBlock>
+          </div>
+
+          <div className="space-y-6">
+            <SectionBlock
+              title="Próxima ação"
+              description="A decisão mais importante para esse cliente agora."
+            >
+              <div className="rounded-lg border border-border bg-primarySoft p-4 text-sm text-primary">
+                Revisar conteúdo pendente de aprovação até hoje às 17h.
+              </div>
+            </SectionBlock>
+
+            <SectionBlock
+              title="Saúde do cliente"
+              description="Leitura operacional resumida."
+            >
+              <div className="space-y-3 text-sm text-textSecondary">
+                <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+                  Cliente está saudável, mas depende de 1 aprovação pendente.
+                </div>
+                <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+                  Última atualização relevante foi hoje às 09:14.
+                </div>
+              </div>
+            </SectionBlock>
+
+            <SectionBlock
+              title="Atividade recente"
+              description="Últimas movimentações relacionadas ao cliente."
+            >
+              <div className="space-y-3 text-sm text-textSecondary">
+                <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+                  Documento atualizado há 2 horas
+                </div>
+                <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+                  Conteúdo enviado para aprovação ontem
+                </div>
+                <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+                  Tarefa concluída hoje cedo
+                </div>
+              </div>
+            </SectionBlock>
+          </div>
+        </div>
+      </div>
+    </AppShell>
+  );
+}
+15. Prompt final para o Claude continuar
+
+Aqui está o próximo prompt, pronto para você colar:
+
+Message
+
+Continue a partir dessa base e evolua o sistema para um nível mais próximo de produção.
+
+Quero agora:
+
+AppSidebar com modo colapsado e responsivo
+AppTopbar com command bar melhor
+TaskDrawerV2 refinado com tabs internas
+TaskCreateDialogV2 com validação e layout melhor
+Board em modo tabela também
+filtros reais no BoardToolbar
+Calendar em visão semana e mês
+cards do calendário mais próximos do mLabs
+health panel do cliente mais sofisticado
+next action card melhor
+recent activity mais visual
+skeletons para board e client hub
+empty states melhores
+animações leves e consistentes
+melhorias visuais para deixar o board mais Asana
+melhorias visuais para deixar o calendário mais editorial e confortável
+
+Quero componentes bem organizados, arquitetura limpa, continuidade com React + Tailwind + shadcn e foco em refatoração incremental.

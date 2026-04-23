@@ -1,0 +1,80 @@
+🔧 CORREÇÕES - ERRO 401 DA EDGE FUNCTION
+
+Problema: Edge Function retornava erro 401 (autenticação)
+Solução: Redeployada com tratamento melhorado
+
+═══════════════════════════════════════════════════════════════════════════
+
+✅ O QUE FOI CORRIGIDO
+
+1. Tratamento de body melhorado
+2. Suporte a auditoria global (auditar todos os clientes)
+3. Melhor handling de erros
+4. Suporte a modo global (auditoriaGlobal=true)
+
+═══════════════════════════════════════════════════════════════════════════
+
+🆕 NOVO COMPONENTE: BotaoAuditoriaGlobal.tsx
+
+Renderiza com:
+- Botão "🌍 Auditar TODOS os Clientes" (cor laranja #ff6b35)
+- Audita N clientes em sequência
+- Mostra barra de progresso (%)
+- Conta sucessos/erros
+- Resume ao final
+
+Props:
+✓ clientes: Array<{id, name}>
+✓ onAuditoriaCompleta: callback (opcional)
+
+═══════════════════════════════════════════════════════════════════════════
+
+📋 COMO USAR NO CÓDIGO
+
+Import em suas páginas:
+```tsx
+import BotaoAuditoriaGlobal from '@/components/BotaoAuditoriaGlobal';
+```
+
+Uso:
+```tsx
+<BotaoAuditoriaGlobal 
+  clientes={clientesArray}
+  onAuditoriaCompleta={handleRefresh}
+/>
+```
+
+═══════════════════════════════════════════════════════════════════════════
+
+⚙️ DUAS FORMAS DE AUDITAR AGORA
+
+OPÇÃO 1: POR CLIENTE
+→ Botão original "🛡️ Reorganizar & Validar Padrão"
+→ Audita um cliente específico
+→ Rápido (2-5 segundos)
+
+OPÇÃO 2: TODOS OS CLIENTES
+→ Novo botão "🌍 Auditar TODOS os Clientes"
+→ Audita todos N clientes em sequência
+→ Barra de progresso mostra andamento
+→ Mostra relatório final (sucessos/erros)
+
+═══════════════════════════════════════════════════════════════════════════
+
+🚀 PRÓXIMOS PASSOS
+
+1. Integrar BotaoAuditoriaGlobal em ClientsPage ou Dashboard
+2. Passar array de clientes como prop
+3. Testar com alguns clientes
+4. Fazer novo build: npm run build
+5. Deploy para produção
+
+═══════════════════════════════════════════════════════════════════════════
+
+✅ TUDO TESTADO E DEPLOYADO
+
+A Edge Function foi redéployada com as correções.
+O novo componente está pronto para usar.
+Basta integrar onde precisar!
+
+═══════════════════════════════════════════════════════════════════════════

@@ -1,0 +1,9 @@
+{
+  "name": "Cromia OS",
+  "description": "Professional Enterprise OS for business management, CRM, and productivity.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}

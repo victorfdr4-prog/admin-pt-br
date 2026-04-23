@@ -1,0 +1,642 @@
+Sétima etapa — client hub premium + calendário premium
+Objetivo
+
+Elevar:
+
+hub do cliente para cockpit operacional
+calendário para central editorial confortável
+painel como um todo para um ecossistema visual coerente
+1. Filosofia do Client Hub premium
+
+O hub do cliente não pode parecer uma página com “informações do cliente”.
+
+Ele precisa responder instantaneamente:
+
+como esse cliente está
+o que está travado
+o que precisa ser feito agora
+o que entra em aprovação
+o que vai ao ar
+quais documentos importam
+o que aconteceu recentemente
+
+Ou seja:
+
+menos ficha
+mais cockpit
+
+2. Estrutura premium do Client Hub
+Componentes recomendados
+clients/
+  client-cockpit-header.tsx
+  client-health-panel.tsx
+  next-action-card.tsx
+  client-summary-strip.tsx
+  client-open-tasks-panel.tsx
+  client-content-pipeline.tsx
+  client-docs-panel.tsx
+  client-activity-timeline.tsx
+3. ClientSummaryStrip
+
+Essa faixa ajuda a leitura rápida no topo.
+
+src/components/clients/client-summary-strip.tsx
+const items = [
+  { label: "Tarefas abertas", value: "6" },
+  { label: "Aprovações pendentes", value: "2" },
+  { label: "Conteúdos da semana", value: "5" },
+  { label: "Última atualização", value: "Hoje, 09:14" },
+];
+
+export function ClientSummaryStrip() {
+  return (
+    <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      {items.map((item) => (
+        <div
+          key={item.label}
+          className="rounded-xl border border-border bg-surface p-4 shadow-sm"
+        >
+          <p className="text-xs font-medium uppercase tracking-wide text-textTertiary">
+            {item.label}
+          </p>
+          <p className="mt-3 text-lg font-semibold text-textPrimary">{item.value}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+4. ClientHealthPanel premium
+
+Esse bloco precisa parecer análise operacional, não card genérico.
+
+src/components/clients/client-health-panel.tsx
+import { StatusChip } from "@/components/ui/status-chip";
+
+export function ClientHealthPanel() {
+  return (
+    <div className="rounded-xl border border-border bg-surface p-5 shadow-sm">
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <div>
+          <h3 className="text-sm font-semibold text-textPrimary">Saúde do cliente</h3>
+          <p className="mt-1 text-sm text-textSecondary">
+            Leitura operacional resumida do momento atual.
+          </p>
+        </div>
+        <StatusChip label="Saudável" variant="success" />
+      </div>
+
+      <div className="space-y-4">
+        <div>
+          <div className="mb-2 flex items-center justify-between text-sm">
+            <span className="text-textSecondary">Organização operacional</span>
+            <span className="font-medium text-textPrimary">84%</span>
+          </div>
+          <div className="h-2 rounded-full bg-surfaceSecondary">
+            <div className="h-2 w-[84%] rounded-full bg-success" />
+          </div>
+        </div>
+
+        <div className="grid gap-3 md:grid-cols-2">
+          <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+            <div className="text-sm font-medium text-textPrimary">Ponto forte</div>
+            <p className="mt-1 text-sm text-textSecondary">
+              O calendário está ativo e os conteúdos desta semana já foram definidos.
+            </p>
+          </div>
+
+          <div className="rounded-lg border border-border bg-surfaceSecondary p-4">
+            <div className="text-sm font-medium text-textPrimary">Ponto de atenção</div>
+            <p className="mt-1 text-sm text-textSecondary">
+              Existem 2 aprovações pendentes que podem travar a próxima entrega.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+5. NextActionCard premium
+
+Esse componente é importantíssimo.
+
+src/components/clients/next-action-card.tsx
+export function NextActionCard() {
+  return (
+    <div className="rounded-xl border border-border bg-primarySoft p-5 shadow-sm">
+      <div className="space-y-3">
+        <div className="inline-flex rounded-full bg-white/70 px-3 py-1 text-xs font-medium text-primary">
+          Próxima ação
+        </div>
+
+        <div>
+          <h3 className="text-base font-semibold text-primary">
+            Revisar conteúdo pendente de aprovação hoje até 17h
+          </h3>
+          <p className="mt-2 text-sm text-primary/80">
+            Essa ação destrava a sequência de conteúdos previstos para amanhã e evita atraso no calendário.
+          </p>
+        </div>
+
+        <div className="flex gap-2 pt-1">
+          <button className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white">
+            Abrir aprovação
+          </button>
+          <button className="rounded-md border border-primary/20 bg-white/70 px-4 py-2 text-sm font-medium text-primary">
+            Ver cliente
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+6. ClientOpenTasksPanel
+src/components/clients/client-open-tasks-panel.tsx
+import { StatusChip } from "@/components/ui/status-chip";
+
+const tasks = [
+  {
+    title: "Criar roteiro de reels institucional",
+    priority: "Alta",
+    due: "Hoje",
+  },
+  {
+    title: "Revisar carrossel de lançamento",
+    priority: "Média",
+    due: "Amanhã",
+  },
+  {
+    title: "Ajustar texto do story promocional",
+    priority: "Baixa",
+    due: "Sexta",
+  },
+];
+
+export function ClientOpenTasksPanel() {
+  return (
+    <div className="space-y-3">
+      {tasks.map((task) => (
+        <div
+          key={task.title}
+          className="rounded-lg border border-border bg-surfaceSecondary p-4"
+        >
+          <div className="flex items-start justify-between gap-3">
+            <div>
+              <p className="text-sm font-medium text-textPrimary">{task.title}</p>
+              <p className="mt-1 text-xs text-textSecondary">Prazo: {task.due}</p>
+            </div>
+
+            <StatusChip
+              label={task.priority}
+              variant={
+                task.priority === "Alta"
+                  ? "danger"
+                  : task.priority === "Média"
+                  ? "warning"
+                  : "muted"
+              }
+            />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+7. ClientContentPipeline
+
+Esse bloco precisa mostrar o pipeline editorial do cliente.
+
+src/components/clients/client-content-pipeline.tsx
+import { StatusChip } from "@/components/ui/status-chip";
+
+const contents = [
+  { title: "Reels bastidores", status: "Revisão" },
+  { title: "Story promocional", status: "Aprovado" },
+  { title: "Carrossel institucional", status: "Produção" },
+];
+
+export function ClientContentPipeline() {
+  return (
+    <div className="space-y-3">
+      {contents.map((content) => (
+        <div
+          key={content.title}
+          className="rounded-lg border border-border bg-surfaceSecondary p-4"
+        >
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <p className="text-sm font-medium text-textPrimary">{content.title}</p>
+              <p className="mt-1 text-xs text-textSecondary">Instagram</p>
+            </div>
+
+            <StatusChip
+              label={content.status}
+              variant={
+                content.status === "Aprovado"
+                  ? "success"
+                  : content.status === "Revisão"
+                  ? "warning"
+                  : "info"
+              }
+            />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+8. ClientDocsPanel
+src/components/clients/client-docs-panel.tsx
+const docs = [
+  "Planejamento Abril",
+  "Briefing institucional",
+  "Referências visuais",
+];
+
+export function ClientDocsPanel() {
+  return (
+    <div className="space-y-3">
+      {docs.map((doc) => (
+        <div
+          key={doc}
+          className="rounded-lg border border-border bg-surfaceSecondary p-4 text-sm text-textPrimary"
+        >
+          {doc}
+        </div>
+      ))}
+    </div>
+  );
+}
+9. ClientActivityTimeline
+src/components/clients/client-activity-timeline.tsx
+const timeline = [
+  "Conteúdo enviado para aprovação hoje às 09:14",
+  "Documento atualizado ontem às 18:42",
+  "Tarefa concluída ontem às 16:05",
+];
+
+export function ClientActivityTimeline() {
+  return (
+    <div className="space-y-3">
+      {timeline.map((item) => (
+        <div
+          key={item}
+          className="rounded-lg border border-border bg-surfaceSecondary p-4 text-sm text-textSecondary"
+        >
+          {item}
+        </div>
+      ))}
+    </div>
+  );
+}
+10. Client Hub premium page
+src/app/clients/[id]/page.tsx
+import { AppShell } from "@/components/layout/app-shell";
+import { ClientCockpitHeader } from "@/components/clients/client-cockpit-header";
+import { ClientSummaryStrip } from "@/components/clients/client-summary-strip";
+import { ClientHealthPanel } from "@/components/clients/client-health-panel";
+import { NextActionCard } from "@/components/clients/next-action-card";
+import { ClientOpenTasksPanel } from "@/components/clients/client-open-tasks-panel";
+import { ClientContentPipeline } from "@/components/clients/client-content-pipeline";
+import { ClientDocsPanel } from "@/components/clients/client-docs-panel";
+import { ClientActivityTimeline } from "@/components/clients/client-activity-timeline";
+import { SectionBlock } from "@/components/layout/section-block";
+
+export default function ClientHubPage() {
+  return (
+    <AppShell>
+      <div className="space-y-6">
+        <ClientCockpitHeader />
+        <ClientSummaryStrip />
+
+        <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
+          <div className="space-y-6">
+            <ClientHealthPanel />
+
+            <SectionBlock
+              title="Execução em andamento"
+              description="Tarefas que estão movimentando esse cliente."
+            >
+              <ClientOpenTasksPanel />
+            </SectionBlock>
+
+            <SectionBlock
+              title="Pipeline de conteúdo"
+              description="O que está em produção, revisão e aprovação."
+            >
+              <ClientContentPipeline />
+            </SectionBlock>
+          </div>
+
+          <div className="space-y-6">
+            <NextActionCard />
+
+            <SectionBlock
+              title="Documentos úteis"
+              description="Arquivos e materiais de apoio do cliente."
+            >
+              <ClientDocsPanel />
+            </SectionBlock>
+
+            <SectionBlock
+              title="Atividade recente"
+              description="Últimas movimentações relevantes."
+            >
+              <ClientActivityTimeline />
+            </SectionBlock>
+          </div>
+        </div>
+      </div>
+    </AppShell>
+  );
+}
+11. Filosofia do Calendário premium
+
+O calendário precisa ser:
+
+rápido de ler
+confortável de escanear
+editorial de verdade
+mais próximo da mente de quem gerencia conteúdo
+
+Ele não pode parecer só um grid com cards.
+
+Ele precisa mostrar:
+
+hoje
+o que está pendente
+o que está em revisão
+o que foi aprovado
+o que vai publicar
+12. Componentes do calendário premium
+calendar/
+  calendar-toolbar.tsx
+  calendar-day-column.tsx
+  posting-calendar-card-premium.tsx
+  calendar-sidebar-summary.tsx
+  calendar-empty-state.tsx
+  calendar-skeleton.tsx
+13. PostingCalendarCard premium
+src/components/calendar/posting-calendar-card-premium.tsx
+"use client";
+
+import { motion } from "framer-motion";
+import { StatusChip } from "@/components/ui/status-chip";
+
+type PostingCalendarCardPremiumProps = {
+  title?: string;
+  client?: string;
+  status?: "Ideia" | "Produção" | "Revisão" | "Aprovado" | "Agendado" | "Publicado";
+  time?: string;
+};
+
+export function PostingCalendarCardPremium({
+  title = "Reels de bastidores",
+  client = "Daniela Estética",
+  status = "Revisão",
+  time = "14:00",
+}: PostingCalendarCardPremiumProps) {
+  const variant =
+    status === "Publicado"
+      ? "success"
+      : status === "Agendado"
+      ? "info"
+      : status === "Revisão"
+      ? "warning"
+      : status === "Produção"
+      ? "info"
+      : "muted";
+
+  return (
+    <motion.div
+      whileHover={{ y: -2 }}
+      transition={{ duration: 0.16 }}
+      className="rounded-xl border border-border bg-surface p-4 shadow-sm"
+    >
+      <div className="space-y-3">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <p className="text-sm font-medium text-textPrimary">{title}</p>
+            <p className="mt-1 text-xs text-textSecondary">{client}</p>
+          </div>
+          <StatusChip label={status} variant={variant as any} />
+        </div>
+
+        <div className="flex items-center justify-between text-xs text-textSecondary">
+          <span>Instagram</span>
+          <span>{time}</span>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+14. CalendarDayColumn
+src/components/calendar/calendar-day-column.tsx
+import { PostingCalendarCardPremium } from "@/components/calendar/posting-calendar-card-premium";
+
+type CalendarDayColumnProps = {
+  day: string;
+  highlight?: boolean;
+};
+
+export function CalendarDayColumn({
+  day,
+  highlight = false,
+}: CalendarDayColumnProps) {
+  return (
+    <div
+      className={`rounded-2xl border p-4 shadow-sm ${
+        highlight
+          ? "border-primary bg-primarySoft/30"
+          : "border-border bg-surface"
+      }`}
+    >
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <div className="text-sm font-semibold text-textPrimary">{day}</div>
+          <div className="mt-1 text-xs text-textTertiary">2 conteúdos</div>
+        </div>
+
+        {highlight ? (
+          <span className="rounded-full bg-primary px-2.5 py-1 text-xs font-medium text-white">
+            Hoje
+          </span>
+        ) : null}
+      </div>
+
+      <div className="space-y-3">
+        <PostingCalendarCardPremium />
+        <PostingCalendarCardPremium status="Agendado" title="Story promocional" time="18:00" />
+      </div>
+    </div>
+  );
+}
+15. CalendarSidebarSummary
+src/components/calendar/calendar-sidebar-summary.tsx
+const items = [
+  { label: "Em revisão", value: "4" },
+  { label: "Agendados", value: "6" },
+  { label: "Publicados", value: "8" },
+];
+
+export function CalendarSidebarSummary() {
+  return (
+    <div className="rounded-2xl border border-border bg-surface p-5 shadow-sm">
+      <h3 className="text-sm font-semibold text-textPrimary">Resumo editorial</h3>
+      <p className="mt-1 text-sm text-textSecondary">
+        Visão rápida do estado atual do calendário.
+      </p>
+
+      <div className="mt-4 space-y-3">
+        {items.map((item) => (
+          <div
+            key={item.label}
+            className="flex items-center justify-between rounded-lg border border-border bg-surfaceSecondary px-4 py-3"
+          >
+            <span className="text-sm text-textSecondary">{item.label}</span>
+            <span className="text-sm font-semibold text-textPrimary">{item.value}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+16. Calendar empty state
+src/components/calendar/calendar-empty-state.tsx
+export function CalendarEmptyState() {
+  return (
+    <div className="rounded-2xl border border-dashed border-border bg-surface p-10 text-center">
+      <div className="mx-auto max-w-md">
+        <h3 className="text-base font-semibold text-textPrimary">
+          Nenhum conteúdo neste período
+        </h3>
+        <p className="mt-2 text-sm text-textSecondary">
+          Crie um novo conteúdo ou ajuste os filtros para visualizar outro intervalo.
+        </p>
+        <button className="mt-4 rounded-md bg-primary px-4 py-2 text-sm font-medium text-white">
+          Novo conteúdo
+        </button>
+      </div>
+    </div>
+  );
+}
+17. Calendar skeleton
+src/components/calendar/calendar-skeleton.tsx
+export function CalendarSkeleton() {
+  return (
+    <div className="grid gap-4 xl:grid-cols-4">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div
+          key={i}
+          className="rounded-2xl border border-border bg-surface p-4 shadow-sm"
+        >
+          <div className="mb-4 h-8 w-24 animate-pulse rounded-md bg-surfaceSecondary" />
+          <div className="space-y-3">
+            <div className="h-28 animate-pulse rounded-xl bg-surfaceSecondary" />
+            <div className="h-28 animate-pulse rounded-xl bg-surfaceSecondary" />
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+18. Calendar premium page
+src/app/calendar/page.tsx
+import { AppShell } from "@/components/layout/app-shell";
+import { PageHeader } from "@/components/layout/page-header";
+import { CalendarToolbar } from "@/components/calendar/calendar-toolbar";
+import { CalendarDayColumn } from "@/components/calendar/calendar-day-column";
+import { CalendarSidebarSummary } from "@/components/calendar/calendar-sidebar-summary";
+
+export default function CalendarPage() {
+  return (
+    <AppShell>
+      <div className="space-y-6">
+        <PageHeader
+          title="Calendário"
+          description="Gerencie o planejamento editorial com mais clareza, conforto e contexto."
+          actions={
+            <button className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:opacity-95">
+              Novo conteúdo
+            </button>
+          }
+        />
+
+        <CalendarToolbar />
+
+        <div className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+          <div className="grid gap-4 md:grid-cols-2">
+            <CalendarDayColumn day="Segunda" />
+            <CalendarDayColumn day="Terça" highlight />
+            <CalendarDayColumn day="Quarta" />
+            <CalendarDayColumn day="Quinta" />
+          </div>
+
+          <div className="space-y-6">
+            <CalendarSidebarSummary />
+          </div>
+        </div>
+      </div>
+    </AppShell>
+  );
+}
+19. O que essa sétima etapa resolve
+
+Com isso, você fecha três coisas fundamentais:
+
+1. Hub do cliente deixa de ser ficha
+
+Agora ele:
+
+orienta
+prioriza
+mostra saúde
+mostra ação
+mostra fluxo editorial
+2. Calendário deixa de ser só visualização
+
+Agora ele:
+
+parece ferramenta editorial de verdade
+fica mais confortável
+transmite melhor status e progresso
+3. Sistema começa a parecer um produto único
+
+Board, Client Hub e Calendário passam a compartilhar:
+
+mesma linguagem visual
+mesma densidade
+mesma hierarquia
+mesmo acabamento
+20. Próxima evolução natural
+
+Depois dessa sétima etapa, o que falta para o sistema ficar muito maduro é:
+
+command palette real
+quick create global
+refinamento de aprovações
+documentos com mesma sofisticação
+animações cruzadas
+responsividade final
+persistência de filtros e visualizações
+polishing visual global
+21. Prompt pronto para a próxima rodada no Claude
+Message
+
+Continue a partir da sétima etapa e eleve o restante do sistema para o mesmo padrão visual e de usabilidade do board, client hub e calendário.
+
+Quero agora:
+
+command palette real
+quick create global
+aprovações premium
+documentos premium
+estados vazios melhores no sistema inteiro
+skeletons para as telas principais
+refinamento global de sidebar e topbar
+persistência de filtros e visualizações
+responsividade final
+polimento visual final do design system
+continuidade com React + Tailwind + shadcn
+dark/light premium
+framer-motion sutil
+estratégia de refatoração incremental

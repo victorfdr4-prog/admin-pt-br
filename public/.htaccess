@@ -1,0 +1,10 @@
+Options -MultiViews
+RewriteEngine On
+
+# Assets físicos — servir direto
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Todas as rotas SPA → index.html
+RewriteRule ^ index.html [L]

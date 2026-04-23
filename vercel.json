@@ -1,0 +1,92 @@
+{
+  "framework": "vite",
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "redirects": [
+    {
+      "source": "/",
+      "missing": [
+        {
+          "type": "host",
+          "value": "portal.cromiacomunicacao.com"
+        }
+      ],
+      "destination": "/admin/",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/assets/:match*",
+      "has": [
+        {
+          "type": "host",
+          "value": "portal.cromiacomunicacao.com"
+        }
+      ],
+      "destination": "/assets/:match*"
+    },
+    {
+      "source": "/favicon.svg",
+      "has": [
+        {
+          "type": "host",
+          "value": "portal.cromiacomunicacao.com"
+        }
+      ],
+      "destination": "/favicon.svg"
+    },
+    {
+      "source": "/aprovacao/:match*",
+      "has": [
+        {
+          "type": "host",
+          "value": "portal.cromiacomunicacao.com"
+        }
+      ],
+      "destination": "/index.html"
+    },
+    {
+      "source": "/:slug",
+      "has": [
+        {
+          "type": "host",
+          "value": "portal.cromiacomunicacao.com"
+        }
+      ],
+      "destination": "/index.html"
+    },
+    {
+      "source": "/admin/assets/:match*",
+      "destination": "/assets/:match*"
+    },
+    {
+      "source": "/admin/template/:match*",
+      "destination": "/template/:match*"
+    },
+    {
+      "source": "/admin/favicon.svg",
+      "destination": "/favicon.svg"
+    },
+    {
+      "source": "/admin/CALENDARIO.PNG",
+      "destination": "/CALENDARIO.PNG"
+    },
+    {
+      "source": "/admin/proposta-reference.png",
+      "destination": "/proposta-reference.png"
+    },
+    {
+      "source": "/admin/:match*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/portal/:match*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/cliente/:match*",
+      "destination": "/index.html"
+    }
+  ]
+}

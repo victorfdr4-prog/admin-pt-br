@@ -1,0 +1,803 @@
+Objetivo
+
+Implementar o redesign do painel atual sem reescrever o sistema do zero, mantendo as funcionalidades existentes e reorganizando a experiência por camadas de uso, consistência visual e conforto operacional.
+
+A estratégia deve ser de refatoração incremental, preservando a lógica atual do produto, mas substituindo gradualmente layout, componentes, padrões visuais e fluxos de interação.
+
+1. Estratégia de implementação
+Direção geral
+
+A implementação não deve começar por páginas isoladas.
+Ela deve começar pela base visual e estrutural do sistema.
+
+A ordem correta é:
+
+Design tokens e tema
+Layout global
+Sidebar e page headers
+Componentes reutilizáveis
+Dashboard
+Client hub
+Board
+Posting calendar
+Ajustes transversais
+Refinamento e performance
+Estratégia de refatoração
+
+A abordagem ideal é “estrangular o antigo aos poucos”, sem quebrar o sistema existente.
+
+Regra
+manter hooks, stores, loaders e lógica de dados
+substituir primeiro a camada de apresentação
+migrar por feature, não por arquivo aleatório
+criar componentes novos e plugar onde já existe valor
+evitar refactor estrutural do domínio logo no início
+2. Árvore de páginas recomendada
+Estrutura de páginas
+
+A árvore deve ser reorganizada semanticamente, mesmo que as rotas internas continuem próximas do que já existe.
+
+/app
+  /dashboard
+  /clients
+  /clients/[id]
+  /board
+  /calendar
+  /approvals
+  /documents
+  /finance
+  /drive
+  /team
+  /portal
+  /settings
+Estrutura por feature
+/components
+  /layout
+  /navigation
+  /ui
+  /dashboard
+  /clients
+  /board
+  /calendar
+  /approvals
+  /documents
+  /feedback
+  /shared
+3. Estrutura de layout global
+Componentes de layout a criar
+AppShell
+AppSidebar
+AppTopbar
+PageContainer
+PageHeader
+SectionBlock
+ContentGrid
+Responsabilidade de cada um
+AppShell
+
+Responsável por:
+
+estruturar sidebar + topbar + área de conteúdo
+suportar sidebar expandida/colapsada
+aplicar background e spacing globais
+manter consistência entre páginas
+AppSidebar
+
+Responsável por:
+
+navegação principal
+agrupamento por contexto
+badging de pendências
+quick create
+toggle colapsado
+AppTopbar
+
+Responsável por:
+
+busca
+command palette
+notificações
+perfil
+toggle dark/light
+PageContainer
+
+Responsável por:
+
+largura máxima
+paddings responsivos
+distribuição vertical
+PageHeader
+
+Responsável por:
+
+título
+subtítulo
+métricas rápidas
+ações primárias e secundárias
+SectionBlock
+
+Responsável por:
+
+encapsular seções
+título e ações
+consistência entre blocos
+4. Navegação e sidebar
+Estrutura visual da sidebar
+
+A sidebar deve ser mais próxima de um ambiente operacional moderno.
+
+Grupos
+const navGroups = [
+  {
+    label: "Hoje",
+    items: [{ label: "Visão geral", href: "/dashboard", icon: Home }],
+  },
+  {
+    label: "Operação",
+    items: [
+      { label: "Board", href: "/board", icon: KanbanSquare },
+      { label: "Calendário", href: "/calendar", icon: CalendarDays },
+      { label: "Aprovações", href: "/approvals", icon: CheckSquare },
+      { label: "Documentos", href: "/documents", icon: FileText },
+    ],
+  },
+  {
+    label: "Clientes",
+    items: [
+      { label: "Clientes", href: "/clients", icon: Users },
+    ],
+  },
+  {
+    label: "Recursos",
+    items: [
+      { label: "Financeiro", href: "/finance", icon: Wallet },
+      { label: "Drive", href: "/drive", icon: Folder },
+      { label: "Time", href: "/team", icon: UserCircle },
+      { label: "Portal", href: "/portal", icon: Globe },
+    ],
+  },
+  {
+    label: "Sistema",
+    items: [{ label: "Configurações", href: "/settings", icon: Settings }],
+  },
+];
+Regras de UX
+grupo com label discreta
+item ativo com fundo semântico e contraste claro
+badge de pendência embutido no item
+sidebar com largura de 264px expandida e 76px colapsada
+quick create no topo ou logo abaixo da busca
+tooltips no modo colapsado
+5. Design tokens
+CSS variables base
+:root {
+  --bg: #f7f8fa;
+  --surface: #ffffff;
+  --surface-secondary: #f3f4f6;
+  --border: #e5e7eb;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --text-tertiary: #9ca3af;
+
+  --primary: #5b5ce2;
+  --primary-soft: #eef0ff;
+
+  --success: #16a34a;
+  --success-soft: #dcfce7;
+
+  --warning: #d97706;
+  --warning-soft: #fef3c7;
+
+  --danger: #dc2626;
+  --danger-soft: #fee2e2;
+
+  --info: #2563eb;
+  --info-soft: #dbeafe;
+
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.04);
+  --shadow-md: 0 8px 24px rgba(16, 24, 40, 0.06);
+  --shadow-lg: 0 16px 40px rgba(16, 24, 40, 0.08);
+}
+
+.dark {
+  --bg: #0b1020;
+  --surface: #111827;
+  --surface-secondary: #172033;
+  --border: #243045;
+  --text-primary: #f3f4f6;
+  --text-secondary: #cbd5e1;
+  --text-tertiary: #94a3b8;
+
+  --primary: #818cf8;
+  --primary-soft: rgba(129, 140, 248, 0.12);
+
+  --success: #22c55e;
+  --success-soft: rgba(34, 197, 94, 0.14);
+
+  --warning: #f59e0b;
+  --warning-soft: rgba(245, 158, 11, 0.14);
+
+  --danger: #ef4444;
+  --danger-soft: rgba(239, 68, 68, 0.14);
+
+  --info: #60a5fa;
+  --info-soft: rgba(96, 165, 250, 0.14);
+}
+Tailwind extend
+theme: {
+  extend: {
+    colors: {
+      bg: "var(--bg)",
+      surface: "var(--surface)",
+      surfaceSecondary: "var(--surface-secondary)",
+      border: "var(--border)",
+      textPrimary: "var(--text-primary)",
+      textSecondary: "var(--text-secondary)",
+      textTertiary: "var(--text-tertiary)",
+      primary: "var(--primary)",
+      primarySoft: "var(--primary-soft)",
+      success: "var(--success)",
+      successSoft: "var(--success-soft)",
+      warning: "var(--warning)",
+      warningSoft: "var(--warning-soft)",
+      danger: "var(--danger)",
+      dangerSoft: "var(--danger-soft)",
+      info: "var(--info)",
+      infoSoft: "var(--info-soft)",
+    },
+    borderRadius: {
+      sm: "var(--radius-sm)",
+      md: "var(--radius-md)",
+      lg: "var(--radius-lg)",
+      xl: "var(--radius-xl)",
+    },
+    boxShadow: {
+      sm: "var(--shadow-sm)",
+      md: "var(--shadow-md)",
+      lg: "var(--shadow-lg)",
+    },
+  },
+}
+6. Dark/light mode
+Implementação
+
+Usar next-themes ou estratégia equivalente.
+
+Provider
+"use client";
+
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+
+export function ThemeProvider({ children }: { children: React.ReactNode }) {
+  return (
+    <NextThemesProvider attribute="class" defaultTheme="dark" enableSystem>
+      {children}
+    </NextThemesProvider>
+  );
+}
+Toggle
+"use client";
+
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+
+export function ThemeToggle() {
+  const { theme, setTheme } = useTheme();
+
+  return (
+    <button
+      className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border bg-surface text-textPrimary transition hover:bg-surfaceSecondary"
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+    >
+      {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+    </button>
+  );
+}
+7. Componentes base
+7.1 PageHeader
+type PageHeaderProps = {
+  title: string;
+  description?: string;
+  actions?: React.ReactNode;
+  meta?: React.ReactNode;
+};
+
+export function PageHeader({
+  title,
+  description,
+  actions,
+  meta,
+}: PageHeaderProps) {
+  return (
+    <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+      <div className="space-y-1">
+        <h1 className="text-2xl font-semibold tracking-tight text-textPrimary">
+          {title}
+        </h1>
+        {description ? (
+          <p className="text-sm text-textSecondary">{description}</p>
+        ) : null}
+        {meta ? <div className="pt-1">{meta}</div> : null}
+      </div>
+
+      {actions ? <div className="flex items-center gap-2">{actions}</div> : null}
+    </div>
+  );
+}
+7.2 SectionBlock
+type SectionBlockProps = {
+  title: string;
+  description?: string;
+  action?: React.ReactNode;
+  children: React.ReactNode;
+};
+
+export function SectionBlock({
+  title,
+  description,
+  action,
+  children,
+}: SectionBlockProps) {
+  return (
+    <section className="rounded-xl border border-border bg-surface shadow-sm">
+      <div className="flex items-start justify-between border-b border-border px-5 py-4">
+        <div>
+          <h2 className="text-sm font-semibold text-textPrimary">{title}</h2>
+          {description ? (
+            <p className="mt-1 text-sm text-textSecondary">{description}</p>
+          ) : null}
+        </div>
+        {action}
+      </div>
+      <div className="p-5">{children}</div>
+    </section>
+  );
+}
+7.3 StatusChip
+import { cn } from "@/lib/utils";
+
+type StatusVariant =
+  | "default"
+  | "success"
+  | "warning"
+  | "danger"
+  | "info"
+  | "muted";
+
+export function StatusChip({
+  label,
+  variant = "default",
+}: {
+  label: string;
+  variant?: StatusVariant;
+}) {
+  const styles = {
+    default: "bg-surfaceSecondary text-textPrimary",
+    success: "bg-successSoft text-success",
+    warning: "bg-warningSoft text-warning",
+    danger: "bg-dangerSoft text-danger",
+    info: "bg-infoSoft text-info",
+    muted: "bg-surfaceSecondary text-textSecondary",
+  };
+
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium",
+        styles[variant]
+      )}
+    >
+      {label}
+    </span>
+  );
+}
+8. Novo dashboard
+Estrutura
+DashboardPage
+  PageHeader
+  HeroFocusCard
+  AlertsSection
+  ApprovalQueue
+  TodayExecutionBlock
+  AttentionClientsList
+  ExecutiveSummary
+  RecentActivityFeed
+Grid recomendada
+topo com hero full width
+segunda faixa com 2 colunas: alertas + aprovações
+terceira faixa com 2 colunas: hoje + clientes em atenção
+quarta faixa com KPIs executivos
+quinta faixa com atividade
+HeroFocusCard
+
+Deve mostrar:
+
+tarefas atrasadas
+aprovações pendentes
+cliente em risco
+próxima ação
+export function HeroFocusCard() {
+  return (
+    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+      <div className="flex flex-col gap-6 md:flex-row md:items-start md:justify-between">
+        <div className="space-y-3">
+          <div className="inline-flex items-center rounded-full bg-primarySoft px-3 py-1 text-xs font-medium text-primary">
+            Foco do dia
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-textPrimary">
+              Hoje você precisa resolver 3 pendências críticas
+            </h2>
+            <p className="mt-2 text-sm text-textSecondary">
+              2 tarefas atrasadas, 1 aprovação pendente e 1 cliente sem atualização há 4 dias.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex gap-2">
+          <button className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white">
+            Abrir board
+          </button>
+          <button className="rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-textPrimary">
+            Ver aprovações
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+9. Client hub
+Estrutura
+ClientHubPage
+  ClientCockpitHeader
+  SummaryStrip
+  MainGrid
+    Left
+      ClientHealthPanel
+      OpenTasksPanel
+      PendingApprovalsPanel
+      PlannedContentPanel
+    Right
+      NextActionCard
+      DeadlinesCard
+      UsefulDocsCard
+      TimelineCard
+Header do cockpit
+export function ClientCockpitHeader() {
+  return (
+    <div className="rounded-xl border border-border bg-surface p-6 shadow-sm">
+      <div className="flex flex-col gap-5 lg:flex-row lg:items-start lg:justify-between">
+        <div className="space-y-3">
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-semibold text-textPrimary">
+              Daniela Estética
+            </h1>
+            <StatusChip label="Saudável" variant="success" />
+          </div>
+          <p className="text-sm text-textSecondary">
+            Cliente ativo, com calendário em andamento e 1 aprovação pendente.
+          </p>
+          <div className="flex flex-wrap gap-2">
+            <StatusChip label="3 tarefas abertas" variant="muted" />
+            <StatusChip label="1 aprovação pendente" variant="warning" />
+            <StatusChip label="2 conteúdos esta semana" variant="info" />
+          </div>
+        </div>
+
+        <div className="flex gap-2">
+          <button className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white">
+            Criar tarefa
+          </button>
+          <button className="rounded-md border border-border bg-surface px-4 py-2 text-sm font-medium text-textPrimary">
+            Criar conteúdo
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+10. Board com referência de Asana
+Estrutura
+BoardPage
+  PageHeader
+  BoardToolbar
+  ViewSwitcher
+  BoardKanbanView
+  BoardTableView
+  TaskDrawerV2
+  TaskCreateDialogV2
+BoardToolbar
+
+Deve conter:
+
+busca
+filtros
+ordenação
+responsável
+status
+cliente
+botão criar tarefa
+Kanban
+
+Colunas com:
+
+cabeçalho limpo
+contador
+cor sutil
+ação de adicionar
+BoardColumnHeader
+export function BoardColumnHeader({
+  title,
+  count,
+  accentClass,
+}: {
+  title: string;
+  count: number;
+  accentClass: string;
+}) {
+  return (
+    <div className="mb-3 flex items-center justify-between">
+      <div className="flex items-center gap-2">
+        <span className={`h-2.5 w-2.5 rounded-full ${accentClass}`} />
+        <h3 className="text-sm font-semibold text-textPrimary">{title}</h3>
+        <span className="rounded-full bg-surfaceSecondary px-2 py-0.5 text-xs text-textSecondary">
+          {count}
+        </span>
+      </div>
+      <button className="text-sm text-textSecondary transition hover:text-textPrimary">
+        +
+      </button>
+    </div>
+  );
+}
+Task card
+import { motion } from "framer-motion";
+
+export function TaskCardCompact() {
+  return (
+    <motion.div
+      layout
+      whileHover={{ y: -2 }}
+      transition={{ duration: 0.16 }}
+      className="cursor-pointer rounded-lg border border-border bg-surface p-3 shadow-sm"
+    >
+      <div className="space-y-3">
+        <div className="space-y-1">
+          <p className="text-sm font-medium text-textPrimary">
+            Criar campanha de inauguração
+          </p>
+          <p className="text-xs text-textSecondary">Daniela Estética</p>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <StatusChip label="Alta" variant="danger" />
+          <StatusChip label="Hoje" variant="warning" />
+        </div>
+
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-textSecondary">Atualizado há 2h</span>
+          <div className="h-7 w-7 rounded-full bg-surfaceSecondary" />
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+Drawer da tarefa
+
+Seções:
+
+resumo
+detalhes
+descrição
+checklist
+comentários
+atividade
+
+Com header editável e ações rápidas no topo.
+
+11. Posting calendar estilo mLabs
+Estrutura
+CalendarPage
+  PageHeader
+  CalendarToolbar
+  CalendarViewSwitcher
+  MonthlyCalendarView
+  WeeklyCalendarView
+  AgendaContentList
+  ContentDrawer
+Toolbar
+filtros por cliente
+filtros por status
+tipo de conteúdo
+responsável
+intervalo
+botão novo conteúdo
+Card do conteúdo
+export function PostingCalendarCard() {
+  return (
+    <div className="rounded-lg border border-border bg-surface p-3 shadow-sm">
+      <div className="space-y-2">
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <p className="text-sm font-medium text-textPrimary">
+              Reels de bastidores
+            </p>
+            <p className="text-xs text-textSecondary">Daniela Estética</p>
+          </div>
+          <StatusChip label="Revisão" variant="warning" />
+        </div>
+
+        <div className="flex items-center gap-2 text-xs text-textSecondary">
+          <span>Instagram</span>
+          <span>•</span>
+          <span>14:00</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+Regras visuais
+dia atual destacado
+cards pequenos, mas legíveis
+cores por status, nunca por excesso decorativo
+mais respiro no grid
+melhor contraste entre células e conteúdo
+12. Motion e microinterações
+Biblioteca
+
+Usar framer-motion para:
+
+hover em cards
+entrada de drawers
+transições entre tabs
+reordenação de listas
+micro feedback em filtros
+Regras
+tudo rápido e sutil
+easing suave
+nunca competir com a tarefa
+Exemplos
+<motion.div
+  initial={{ opacity: 0, y: 8 }}
+  animate={{ opacity: 1, y: 0 }}
+  exit={{ opacity: 0, y: 4 }}
+  transition={{ duration: 0.18 }}
+>
+  {children}
+</motion.div>
+13. Estados vazios, loading e feedback
+Estados vazios
+
+Cada tela precisa de estado vazio útil, não só vazio visual.
+
+Exemplo
+“Nenhuma aprovação pendente. Isso deixa sua fila mais leve hoje.”
+“Nenhum conteúdo agendado para esta semana.”
+“Esse cliente está sem tarefas abertas.”
+Skeletons
+
+Criar:
+
+dashboard skeleton
+client hub skeleton
+board skeleton
+calendar skeleton
+Feedback
+toast discreto
+inline success quando fizer sentido
+erro com ação sugerida
+loading com skeleton, não spinner genérico sempre
+14. Ordem de implementação por prioridade
+Prioridade 1
+tokens
+tema dark/light
+shell
+sidebar
+page headers
+Prioridade 2
+cards base
+status chips
+section block
+toolbar padrão
+empty states
+skeletons
+Prioridade 3
+dashboard novo
+Prioridade 4
+client hub novo
+Prioridade 5
+board novo
+Prioridade 6
+calendar novo
+Prioridade 7
+refinamento transversal
+motion
+performance
+acessibilidade
+15. Refatoração incremental sem reescrever tudo
+Estratégia prática
+Criar camada nova de layout e tema
+Envelopar páginas antigas no novo shell
+Substituir gradualmente os blocos internos
+Migrar primeiro componentes mais reutilizados
+Depois migrar as páginas prioritárias
+Exemplo
+Antes
+DashboardPage renderiza seus próprios cards e grids
+Depois
+DashboardPage passa a usar:
+PageHeader
+HeroFocusCard
+SectionBlock
+ApprovalQueue
+AttentionClientsList
+
+Sem mexer na origem dos dados de imediato.
+
+16. Exemplo de shell completo
+import { AppSidebar } from "@/components/navigation/app-sidebar";
+import { AppTopbar } from "@/components/layout/app-topbar";
+
+export function AppShell({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="min-h-screen bg-bg text-textPrimary">
+      <div className="flex min-h-screen">
+        <AppSidebar />
+        <div className="flex min-w-0 flex-1 flex-col">
+          <AppTopbar />
+          <main className="flex-1 px-6 py-6 lg:px-8">{children}</main>
+        </div>
+      </div>
+    </div>
+  );
+}
+17. Decisão final de produto
+
+A implementação deve preservar esta filosofia:
+
+o sistema existe para orientar trabalho
+o usuário precisa sentir controle
+cada tela precisa reduzir dúvida
+o visual precisa apoiar a operação
+a interface deve parecer robusta, mas leve
+o redesign deve aumentar uso diário, não só beleza
+Resultado esperado
+
+Ao final da refatoração, o sistema deve transmitir:
+
+clareza imediata
+prioridade evidente
+densidade bem editada
+operação confortável
+consistência premium
+board agradável de usar
+hub do cliente muito mais útil
+dashboard realmente acionável
+Prompt complementar para continuar no Claude
+Message
+
+Agora gere a implementação inicial com base nessa arquitetura.
+
+Quero:
+
+código do AppShell
+código da AppSidebar
+código do AppTopbar
+código do PageHeader
+código do SectionBlock
+código do HeroFocusCard
+código da nova DashboardPage
+código do ClientCockpitHeader
+código do TaskCardCompact
+código do BoardColumnHeader
+código do PostingCalendarCard
+tokens completos em CSS variables
+integração com Tailwind
+dark/light mode
+framer-motion leve
+tudo organizado para refatoração incremental

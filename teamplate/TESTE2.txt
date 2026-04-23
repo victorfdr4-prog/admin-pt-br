@@ -1,0 +1,156 @@
+Agora ignore explicações conceituais longas e entre em modo execução.
+
+Use o documento mestre anterior como base oficial.
+
+Quero que você me entregue a implementação prática do redesign em blocos claros, completos e organizados.
+
+## PILHA OBRIGATÓRIA
+
+* React
+* Next.js App Router
+* Tailwind CSS
+* shadcn/ui
+* framer-motion
+* next-themes
+* lucide-react
+
+## REGRAS
+
+* não reescrever o sistema inteiro
+* preservar lógica atual
+* fazer refatoração incremental
+* focar primeiro na camada visual e estrutural
+* criar componentes reutilizáveis
+* separar por feature
+* usar tokens CSS
+* suportar dark/light
+* motion sutil
+* responsividade real
+* persistência com localStorage
+
+## ENTREGA QUE EU QUERO AGORA
+
+### 1. Estrutura técnica
+
+* árvore de pastas
+* ordem de implementação
+* componentes-base
+
+### 2. Foundation
+
+Gere código real para:
+
+* tokens.css
+* tailwind config extend
+* theme provider
+* AppShell
+* AppSidebar
+* AppTopbar
+* PageHeader
+* SectionBlock
+* StatusChip
+* usePersistedState
+
+### 3. Dashboard
+
+Gere código real para:
+
+* HeroFocusCard
+* ApprovalQueue
+* AttentionClientsList
+* ExecutiveSummary
+* RecentActivityFeed
+* DashboardPage completa
+
+### 4. Board
+
+Gere código real para:
+
+* BoardToolbar
+* BoardColumnHeader
+* BoardColumn
+* TaskQuickActions
+* TaskCardPremium
+* BoardKanbanView
+* TaskRowSelectable
+* BoardTableView
+* TaskDrawerPremium com tabs reais
+* TaskCreateDialogV2
+* BoardEmptyState
+* BoardSkeleton
+* BoardPage com persistência de modo tabela/kanban
+
+### 5. Client hub
+
+Gere código real para:
+
+* ClientCockpitHeader
+* ClientSummaryStrip
+* ClientHealthPanel
+* NextActionCard
+* ClientOpenTasksPanel
+* ClientContentPipeline
+* ClientDocsPanel
+* ClientActivityTimeline
+* ClientHubPage completa
+
+### 6. Calendar
+
+Gere código real para:
+
+* CalendarToolbar
+* PostingCalendarCardPremium
+* CalendarDayColumn
+* CalendarSidebarSummary
+* CalendarEmptyState
+* CalendarSkeleton
+* CalendarPage completa
+
+### 7. Approvals
+
+Gere código real para:
+
+* ApprovalsSummaryCards
+* ApprovalQueuePremiumRow
+* ApprovalsEmptyState
+* ApprovalsSkeleton
+* ApprovalsPage completa
+
+### 8. Documents
+
+Gere código real para:
+
+* DocumentsSummaryPanel
+* DocumentListItemPremium
+* DocumentsEmptyState
+* DocumentsSkeleton
+* DocumentEditorPremium
+* DocumentsPage
+* DocumentEditorPage
+
+### 9. Productivity
+
+Gere código real para:
+
+* CommandPalette
+* QuickCreateMenu
+* integração visual com topbar/sidebar
+
+### 10. Polish final
+
+* guidelines de motion
+* guidelines responsivas
+* guidelines de empty state
+* guidelines de skeleton
+* guidelines de unificação do design system
+
+## QUALIDADE
+
+* quero código limpo
+* quero componentes separados
+* quero TypeScript quando fizer sentido
+* quero classes Tailwind consistentes
+* quero semântica clara
+* quero organização por feature
+* quero que você seja prescritivo
+* quero que você escreva como se isso fosse entrar em produção depois de refinado
