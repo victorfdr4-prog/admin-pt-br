@@ -1,67 +1,67 @@
-# CROMiaOS
+# 👑 CROMiaOS 1.0
+> **Enterprise Marketing Ecosystem** | SaaS operacional para gestão avançada de agências.
 
-SaaS operacional para agência de marketing com:
-- Frontend: React + Vite
-- Backend: Express (TypeScript)
-- Banco/Auth: Supabase
-- Arquivos: Google Drive API (OAuth pessoal ou Service Account)
-- IA: OpenAI + pgvector (Supabase)
+O **CROMiaOS** é um ecossistema robusto projetado para centralizar a operação, o financeiro e a comunicação de agências de marketing de alto nível, integrando fluxos de trabalho inteligentes e inteligência artificial.
 
-## 1. Pré-requisitos
-- Node.js 20+
-- Projeto Supabase ativo
-- Google Drive API habilitada no Google Cloud
-- Chave da OpenAI
+---
 
-## 2. Ambiente
-1. Copie `.env.example` para `.env`
-2. Preencha todas as variáveis
+## 🛠️ Stack Tecnológica
 
-### Google Drive com conta pessoal (sem Workspace)
-Use OAuth2 no backend:
-- `GOOGLE_OAUTH_CLIENT_ID`
-- `GOOGLE_OAUTH_CLIENT_SECRET`
-- `GOOGLE_OAUTH_REFRESH_TOKEN`
-- `GOOGLE_OAUTH_ACCESS_TOKEN` (opcional, fallback temporário)
-- `GOOGLE_DRIVE_ROOT_FOLDER_ID`
+* **Frontend:** React + Vite (Foco em performance e UX)
+* **Backend:** Node.js + Express (TypeScript)
+* **Banco de Dados:** Supabase (PostgreSQL)
+* **Autenticação:** Supabase Auth
+* **Storage:** Google Drive API (Integração direta para ativos de clientes)
+* **Inteligência Artificial:** OpenAI + `pgvector` (RAG - Retrieval-Augmented Generation)
 
-Fluxo para gerar `refresh_token`:
-1. No Google Cloud Console, crie credencial OAuth Client.
-2. Em OAuth Playground, abra o ícone de configuração e marque `Use your own OAuth credentials`.
-3. Informe seu `client_id` e `client_secret`.
-4. Selecione o escopo `https://www.googleapis.com/auth/drive`.
-5. Autorize e troque o código por tokens.
-6. Copie o `refresh_token` para o `.env`.
+---
 
-## 3. Banco de dados
-No SQL Editor do Supabase:
-1. Execute `supabase_schema.sql`
-2. Crie um usuário admin no Auth
-3. Ajuste a role desse usuário em `profiles.role = 'admin'`
+## 📋 Pré-requisitos
 
-## 4. Rodar local
+Antes de iniciar o setup, garante que tens:
+- **Node.js** v20 ou superior
+- **Instância no Supabase** ativa
+- **Google Cloud Project** com a *Google Drive API* habilitada
+- **API Key da OpenAI**
+
+---
+
+## ⚙️ Configuração do Ambiente
+
+1.  **Instalação de Dependências:**
+    ```bash
+    npm install
+    ```
+
+2.  **Variáveis de Ambiente:**
+    Copia o ficheiro de exemplo e preenche as tuas credenciais:
+    ```bash
+    cp .env.example .env
+    ```
+
+### 📂 Integração com Google Drive (OAuth2)
+Para utilizar contas pessoais (sem Workspace), segue o fluxo de `refresh_token`:
+
+1.  No **Google Cloud Console**, cria um *OAuth Client ID* (Web Application).
+2.  Acede ao [Google OAuth Playground](https://developers.google.com/oauthplayground/).
+3.  Nas definições (ícone engrenagem), marca **"Use your own OAuth credentials"** e insere o teu `client_id` e `client_secret`.
+4.  Seleciona o scope `https://www.googleapis.com/auth/drive`.
+5.  Autoriza, faz o "Exchange authorization code for tokens" e copia o **`refresh_token`** para o teu `.env`.
+
+---
+
+## 🗄️ Estrutura de Dados
+
+1.  **Schema:** Executa o script `supabase_schema.sql` no SQL Editor do teu projeto Supabase.
+2.  **Permissões:** Após criar o teu utilizador no Auth, define a role administrativa:
+    ```sql
+    UPDATE profiles SET role = 'admin' WHERE email = 'teu-email@exemplo.com';
+    ```
+
+---
+
+## 🚀 Execução
+
+### Ambiente de Desenvolvimento
 ```bash
-npm install
 npm run dev
-```
-
-Servidor: `http://localhost:3000`  
-Healthcheck: `http://localhost:3000/health`
-
-## 5. Build produção
-```bash
-npm run build
-npm run start
-```
-
-## 6. Endpoints principais
-- `/api/auth`
-- `/api/clientes`
-- `/api/kanban`
-- `/api/tasks`
-- `/api/financeiro`
-- `/api/dashboard`
-- `/api/files`
-- `/api/portal`
-- `/api/admin`
-- `/api/ai`
