@@ -64,4 +64,8 @@ Para utilizar contas pessoais (sem Workspace), segue o fluxo de `refresh_token`:
 
 ### Ambiente de Desenvolvimento
 ```bash
+<<<<<<< Updated upstream
 npm run dev
+=======
+npm run dev
+>>>>>>> Stashed changes

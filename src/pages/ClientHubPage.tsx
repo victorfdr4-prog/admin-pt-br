@@ -226,7 +226,7 @@ export const ClientHubPage: React.FC = () => {
         phone={clientData.phone}
         website={clientData.site_url || clientData.website}
         joinDate={clientData.created_at}
-        portalUrl={clientData.portal_active ? buildPortalUrl(clientData.portal_token || clientData.name, clientData.name) : undefined}
+        portalUrl={clientData.portal_active ? buildPortalUrl(clientData.name, clientData.name) : undefined}
         onEditClick={() => navigate(`/clients?edit=${clientData.id}`)}
       />
 

@@ -80,15 +80,11 @@ const resolvePortalBaseUrl = () => {
     return current.origin;
   }
 
-  if (hostname.endsWith('cromiacomunicacao.com')) {
-    return `${current.protocol}//portal.cromiacomunicacao.com`;
-  }
-
   return current.origin;
 };
 
 export const buildPortalUrl = (reference: string, clientName?: string | null) => {
-  const normalizedReference = slugify(reference) || slugify(clientName || '') || String(reference || '').trim();
+  const normalizedReference = slugify(clientName || '') || slugify(reference) || String(reference || '').trim();
   if (!normalizedReference) return '';
 
   const baseUrl = resolvePortalBaseUrl();

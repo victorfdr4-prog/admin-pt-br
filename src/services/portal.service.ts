@@ -30,7 +30,7 @@ export const PortalService = {
     return {
       id: latest?.id || clientId,
       token: client.portal_token,
-      url: buildPortalUrl(client.portal_token, client.name),
+      url: buildPortalUrl(client.name, client.name),
       is_active: latest?.is_active ?? client.portal_active ?? true,
       expires_at: latest?.expires_at || null,
       created_at: latest?.created_at || null,
@@ -89,7 +89,7 @@ export const PortalService = {
     return {
       id: portalRow.id,
       token,
-      url: buildPortalUrl(token, clientRow?.name || ''),
+      url: buildPortalUrl(clientRow?.name || token, clientRow?.name || ''),
       is_active: true,
       expires_at: expiresAt,
       created_at: portalRow.created_at,
